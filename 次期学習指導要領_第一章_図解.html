@@ -8,8 +8,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
-      background: #f0f4f8;
-      color: #1a2035;
+      background: #f5f5f5;
+      color: #1a1a1a;
       padding: 24px 16px;
     }
 
@@ -20,17 +20,17 @@
     .page-title h1 {
       font-size: 22px;
       font-weight: 900;
-      color: #1a2035;
+      color: #1a1a1a;
       letter-spacing: 0.03em;
     }
     .page-title .subtitle {
       font-size: 13px;
-      color: #6b7a99;
+      color: #666;
       margin-top: 4px;
     }
     .page-title .badge {
       display: inline-block;
-      background: #e53e3e;
+      background: #cc0000;
       color: white;
       font-size: 11px;
       font-weight: 700;
@@ -58,22 +58,23 @@
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
       padding: 3px 10px;
       border-radius: 20px;
       display: inline-block;
       margin-bottom: 10px;
+      background: #1a1a1a;
+      color: white;
     }
     .card h2 {
       font-size: 16px;
       font-weight: 800;
       margin-bottom: 12px;
       line-height: 1.4;
+      color: #1a1a1a;
     }
 
     /* ── Section 1: WHY ── */
-    .why-card { border-left: 5px solid #667eea; }
-    .why-card .card-label { background: #ebedff; color: #667eea; }
+    .why-card { border-left: 5px solid #1a1a1a; }
     .why-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -81,20 +82,21 @@
       margin-top: 4px;
     }
     .why-item {
-      background: #f7f8ff;
+      background: #f8f8f8;
       border-radius: 10px;
       padding: 12px;
       text-align: center;
+      border: 1px solid #ddd;
     }
     .why-item .icon { font-size: 26px; margin-bottom: 6px; }
-    .why-item .why-title { font-size: 13px; font-weight: 700; color: #3a4a7a; margin-bottom: 4px; }
+    .why-item .why-title { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
     .why-item .why-desc { font-size: 11.5px; color: #555; line-height: 1.5; }
 
     /* ── Section 2: 3方向性 ── */
-    .directions-card { border-left: 5px solid #38b2ac; }
-    .directions-card .card-label { background: #e6fffa; color: #2c7a7b; }
+    .directions-card { border-left: 5px solid #cc0000; }
+    .directions-card .card-label { background: #cc0000; color: white; }
     .core-message {
-      background: linear-gradient(135deg, #667eea, #38b2ac);
+      background: #1a1a1a;
       color: white;
       border-radius: 12px;
       padding: 14px 18px;
@@ -104,7 +106,8 @@
       font-weight: 800;
       line-height: 1.5;
     }
-    .core-message .small { font-size: 12px; font-weight: 400; opacity: 0.9; margin-top: 2px; }
+    .core-message .accent { color: #ff6666; }
+    .core-message .small { font-size: 12px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
     .directions-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -114,10 +117,10 @@
       border-radius: 12px;
       padding: 14px 12px;
       position: relative;
+      background: #f8f8f8;
+      border: 2px solid #ccc;
     }
-    .dir-excellence { background: #fff5f5; border: 2px solid #fc8181; }
-    .dir-equity { background: #fffff0; border: 2px solid #f6ad55; }
-    .dir-feasibility { background: #f0fff4; border: 2px solid #68d391; }
+    .dir-excellence { background: #fff5f5; border: 2px solid #cc0000; }
     .dir-item .eng-tag {
       font-size: 10px;
       font-weight: 800;
@@ -126,24 +129,24 @@
       border-radius: 10px;
       display: inline-block;
       margin-bottom: 6px;
+      background: #1a1a1a;
+      color: white;
     }
-    .excellence-tag { background: #fed7d7; color: #c53030; }
-    .equity-tag { background: #feebc8; color: #c05621; }
-    .feasibility-tag { background: #c6f6d5; color: #276749; }
+    .dir-excellence .eng-tag { background: #cc0000; color: white; }
     .dir-item .dir-num {
       font-size: 22px;
       font-weight: 900;
       line-height: 1;
       margin-bottom: 4px;
+      color: #1a1a1a;
     }
-    .excellence-num { color: #e53e3e; }
-    .equity-num { color: #dd6b20; }
-    .feasibility-num { color: #276749; }
+    .dir-excellence .dir-num { color: #cc0000; }
     .dir-item .dir-title {
       font-size: 13px;
       font-weight: 800;
       margin-bottom: 6px;
       line-height: 1.4;
+      color: #1a1a1a;
     }
     .dir-item ul {
       list-style: none;
@@ -163,27 +166,27 @@
       left: 0;
       font-size: 10px;
       top: 3px;
+      color: #888;
     }
 
     /* ── Section 3: 育てる人間像 ── */
-    .human-card { border-left: 5px solid #9f7aea; }
-    .human-card .card-label { background: #faf5ff; color: #6b46c1; }
+    .human-card { border-left: 5px solid #1a1a1a; }
     .human-box {
-      background: linear-gradient(135deg, #faf5ff, #ebf8ff);
+      background: #f8f8f8;
       border-radius: 12px;
       padding: 16px 20px;
       text-align: center;
-      border: 2px solid #d6bcfa;
+      border: 2px solid #ccc;
     }
     .human-box .main-text {
       font-size: 15px;
       font-weight: 800;
-      color: #44337a;
+      color: #1a1a1a;
       line-height: 1.7;
     }
     .human-box .sub-text {
       font-size: 12px;
-      color: #6b7280;
+      color: #666;
       margin-top: 8px;
     }
     .human-pillars {
@@ -199,22 +202,22 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      border: 1px solid #e9d8fd;
+      border: 1px solid #ddd;
     }
     .pillar-icon { font-size: 22px; flex-shrink: 0; }
-    .pillar-text { font-size: 12px; color: #3c366b; line-height: 1.5; }
-    .pillar-text strong { font-size: 13px; display: block; margin-bottom: 2px; }
+    .pillar-text { font-size: 12px; color: #333; line-height: 1.5; }
+    .pillar-text strong { font-size: 13px; display: block; margin-bottom: 2px; color: #1a1a1a; }
 
     /* ── Section 4: 教職員のやること ── */
-    .action-card { border-left: 5px solid #e53e3e; }
-    .action-card .card-label { background: #fff5f5; color: #c53030; }
+    .action-card { border-left: 5px solid #cc0000; }
+    .action-card .card-label { background: #cc0000; color: white; }
     .action-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
     }
     .action-table th {
-      background: #2d3748;
+      background: #1a1a1a;
       color: white;
       padding: 9px 12px;
       text-align: left;
@@ -230,34 +233,34 @@
       line-height: 1.5;
     }
     .action-table tr:last-child td { border-bottom: none; }
-    .action-table tr:nth-child(even) td { background: #f7fafc; }
+    .action-table tr:nth-child(even) td { background: #f8f8f8; }
     .action-table .who-cell {
       font-weight: 700;
-      color: #2d3748;
+      color: #1a1a1a;
       white-space: nowrap;
       font-size: 12px;
     }
     .action-table .when-cell {
-      color: #e53e3e;
+      color: #cc0000;
       font-weight: 700;
       white-space: nowrap;
       font-size: 12px;
     }
-    .action-table .do-cell { color: #1a202c; }
-    .action-table .note-cell { color: #718096; font-size: 11.5px; }
+    .action-table .do-cell { color: #1a1a1a; }
+    .action-table .note-cell { color: #666; font-size: 11.5px; }
 
     /* ── 矢印 ── */
     .arrow-row {
       text-align: center;
       font-size: 24px;
-      color: #a0aec0;
+      color: #999;
       line-height: 1;
       margin: -4px 0;
     }
 
     /* ── ひと言まとめ ── */
     .summary-card {
-      background: linear-gradient(135deg, #2d3748, #4a5568);
+      background: #1a1a1a;
       color: white;
       border-radius: 14px;
       padding: 18px 24px;
@@ -280,12 +283,13 @@
       margin-top: 8px;
       line-height: 1.6;
     }
+    .summary-card .summary-sub strong { color: #ff9999; }
 
     /* ── 出典 ── */
     .source {
       text-align: center;
       font-size: 11px;
-      color: #a0aec0;
+      color: #999;
       margin-top: 16px;
     }
 
@@ -336,7 +340,7 @@
     <div class="card directions-card">
       <span class="card-label">改訂の3つの方向性（第一章の核心）</span>
       <div class="core-message">
-        「多様な子供たちの『深い学び』を確かなものに」
+        「多様な子供たちの『<span class="accent">深い学び</span>』を確かなものに」
         <div class="small">〜あらゆる方策を活用し、三位一体で具現化〜</div>
       </div>
       <div class="directions-grid">
@@ -391,7 +395,7 @@
           生涯にわたって主体的に学び続け、<br>
           多様な他者と協働しながら、<br>
           自らの人生を舵取りすることができる<br>
-          <strong style="color:#6b46c1;">民主的で持続可能な社会の創り手</strong>
+          <strong style="color:#cc0000;">民主的で持続可能な社会の創り手</strong>
         </div>
         <div class="sub-text">「みんな」で育む ── 教職員・子ども・保護者・地域・行政が一体となって</div>
       </div>
