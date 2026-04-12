@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>週28コマ・40週への平準化 詳細解説</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif;
+      background: #f0f3f8;
+      color: #1a202c;
+      padding: 24px 14px 60px;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* ======= BACK LINK ======= */
+    .back-link {
+      max-width: 820px;
+      margin: 0 auto 16px;
+    }
+    .back-link a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #4a5568;
+      text-decoration: none;
+      padding: 6px 14px;
+      background: white;
+      border-radius: 20px;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: background 0.15s;
+    }
+    .back-link a:hover { background: #ebf8ff; color: #2b6cb0; }
+
+    /* ======= HEADER ======= */
+    .hdr {
+      max-width: 820px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    .hdr-tag {
+      display: inline-block;
+      background: #276749;
+      color: white;
+      font-size: 11px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .hdr h1 {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.35;
+      color: #1a202c;
+    }
+    .hdr .hdr-sub {
+      font-size: 12.5px;
+      color: #718096;
+      margin-top: 6px;
+    }
+    .hdr .hdr-core {
+      margin-top: 12px;
+      display: inline-block;
+      background: #276749;
+      color: white;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    /* ======= LAYOUT ======= */
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ======= CARD ======= */
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .sec-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 3px 11px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #2d3748;
+    }
+
+    /* ======= MISUNDERSTANDING ======= */
+    .lbl-problem { background: #fff5f5; color: #c53030; }
+    .card-problem { border-left: 5px solid #c53030; }
+
+    .myth-vs {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .myth-box {
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .myth-wrong {
+      background: #fff5f5;
+      border: 2px solid #fc8181;
+    }
+    .myth-right {
+      background: #f0fff4;
+      border: 2px solid #68d391;
+    }
+    .myth-box .mb-tag {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .tag-wrong { background: #fed7d7; color: #c53030; }
+    .tag-right { background: #c6f6d5; color: #22543d; }
+    .myth-box .mb-main {
+      font-size: 13.5px;
+      font-weight: 800;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .myth-box .mb-sub {
+      font-size: 12px;
+      color: #4a5568;
+      line-height: 1.5;
+    }
+    .myth-arrow { font-size: 28px; color: #718096; text-align: center; }
+
+    .rule-note {
+      background: #fffbeb;
+      border: 1.5px solid #f6ad55;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .rule-note strong { color: #c05621; }
+
+    /* ======= CALCULATION ======= */
+    .lbl-calc { background: #ebedff; color: #434190; }
+    .card-calc { border-left: 5px solid #667eea; }
+
+    .calc-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .calc-box {
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .calc-before {
+      background: #fff5f5;
+      border: 2px solid #fc8181;
+    }
+    .calc-after {
+      background: #f0fff4;
+      border: 2px solid #68d391;
+    }
+    .calc-box .cb-head {
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid rgba(0,0,0,0.08);
+    }
+    .cb-before-h { color: #c53030; }
+    .cb-after-h  { color: #22543d; }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 13px;
+    }
+    .calc-row:last-child { border-bottom: none; }
+    .cr-label { color: #4a5568; }
+    .cr-val { font-weight: 700; color: #1a202c; }
+    .calc-total {
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .ct-before { background: #fed7d7; }
+    .ct-after  { background: #c6f6d5; }
+    .calc-total .ct-num {
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .ct-before .ct-num { color: #c53030; }
+    .ct-after  .ct-num { color: #22543d; }
+    .calc-total .ct-label { font-size: 11px; color: #4a5568; margin-top: 2px; }
+
+    .calc-eq-note {
+      text-align: center;
+      font-size: 13px;
+      color: #276749;
+      font-weight: 700;
+      padding: 10px;
+      background: #f0fff4;
+      border-radius: 10px;
+    }
+
+    /* ======= SMALL SCHOOL EXAMPLE ======= */
+    .lbl-example { background: #e6fffa; color: #234e52; }
+    .card-example { border-left: 5px solid #2c7a7b; }
+
+    .school-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .tab-btn {
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 2px solid #e2e8f0;
+      background: #f7fafc;
+      color: #4a5568;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: #2c7a7b;
+      color: white;
+      border-color: #2c7a7b;
+    }
+
+    .example-content { display: none; }
+    .example-content.show { display: block; }
+
+    .ex-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .ex-step {
+      background: #f7fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .ex-step .es-num {
+      font-size: 10px;
+      font-weight: 800;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+    .ex-step .es-icon { font-size: 20px; margin-bottom: 4px; }
+    .ex-step .es-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 3px;
+    }
+    .ex-step .es-val {
+      font-size: 14px;
+      font-weight: 900;
+      color: #276749;
+    }
+    .ex-step .es-unit { font-size: 10px; color: #718096; }
+
+    .ex-formula {
+      background: #f0f4f8;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .ef-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-weight: 700;
+    }
+    .ef-num {
+      background: #2c7a7b;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .ef-op { color: #718096; font-size: 16px; }
+    .ef-result {
+      background: #276749;
+      color: white;
+      padding: 4px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 900;
+    }
+    .ef-label { font-size: 11px; color: #718096; }
+
+    .timetable-wrap {
+      overflow-x: auto;
+    }
+    .timetable {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+    }
+    .timetable th {
+      background: #2d3748;
+      color: white;
+      padding: 7px 10px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .timetable td {
+      border: 1px solid #e2e8f0;
+      padding: 6px 10px;
+      text-align: center;
+    }
+    .timetable tr:nth-child(even) td { background: #f7fafc; }
+    .timetable .td-num { font-size: 15px; font-weight: 900; color: #276749; }
+    .timetable .td-note { font-size: 10px; color: #718096; }
+
+    /* ======= EFFECT ======= */
+    .lbl-effect { background: #faf5ff; color: #553c9a; }
+    .card-effect { border-left: 5px solid #9f7aea; }
+
+    .effect-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .eff-item {
+      background: #faf5ff;
+      border: 1.5px solid #e9d8fd;
+      border-radius: 12px;
+      padding: 14px 13px;
+      text-align: center;
+    }
+    .eff-icon { font-size: 28px; margin-bottom: 6px; }
+    .eff-title { font-size: 13px; font-weight: 800; color: #44337a; margin-bottom: 4px; }
+    .eff-body  { font-size: 11.5px; color: #553c9a; line-height: 1.5; }
+    .eff-num {
+      display: inline-block;
+      background: #9f7aea;
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+      padding: 3px 14px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    /* ======= FAQ ======= */
+    .lbl-faq { background: #fffbeb; color: #c05621; }
+    .card-faq { border-left: 5px solid #f6ad55; }
+
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-item { }
+    .faq-q {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    .faq-q .q-mark {
+      background: #f6ad55;
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 3px 9px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .faq-q .q-text { font-size: 13.5px; font-weight: 800; color: #1a202c; line-height: 1.4; }
+    .faq-a {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding-left: 2px;
+    }
+    .faq-a .a-mark {
+      background: #2c7a7b;
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 3px 9px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .faq-a .a-text {
+      font-size: 13px;
+      color: #2d3748;
+      line-height: 1.6;
+      background: #f0fff4;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border-left: 3px solid #68d391;
+    }
+    .faq-divider { border: none; border-top: 1px dashed #e2e8f0; margin: 4px 0; }
+
+    /* ======= ACTION STEPS ======= */
+    .lbl-action { background: #fff5f5; color: #c53030; }
+    .card-action { border-left: 5px solid #c53030; }
+
+    .action-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .as-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 13px 16px;
+      border: 1.5px solid #e2e8f0;
+    }
+    .as-step {
+      background: #c53030;
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .as-body { flex: 1; }
+    .as-body .as-title { font-size: 14px; font-weight: 800; color: #1a202c; margin-bottom: 4px; }
+    .as-body .as-desc { font-size: 12px; color: #4a5568; line-height: 1.55; }
+    .as-when {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .w-now  { background: #fed7d7; color: #c53030; }
+    .w-soon { background: #feebc8; color: #c05621; }
+
+    /* ======= SUMMARY ======= */
+    .card-sum {
+      background: linear-gradient(135deg, #276749, #2c7a7b);
+      color: white;
+      border-radius: 14px;
+      padding: 18px 24px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .sum-lbl { font-size: 11px; opacity: 0.7; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .sum-text { font-size: 16px; font-weight: 800; line-height: 1.7; }
+    .sum-sub  { font-size: 12px; opacity: 0.8; margin-top: 10px; line-height: 1.65; }
+
+    .foot { text-align: center; font-size: 11px; color: #a0aec0; margin-top: 16px; }
+
+    /* ======= RESPONSIVE ======= */
+    @media (max-width: 600px) {
+      .myth-vs { grid-template-columns: 1fr; }
+      .myth-arrow { transform: rotate(90deg); }
+      .calc-compare { grid-template-columns: 1fr; }
+      .ex-steps { grid-template-columns: repeat(3, 1fr); }
+      .effect-grid { grid-template-columns: 1fr; }
+      .card { padding: 14px 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACK LINK -->
+  <div class="back-link">
+    <a href="論点整理_図解.html">← 論点整理 第一章 図解に戻る</a>
+  </div>
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-tag">③ Feasibility｜余白の創出</div>
+    <h1>週28コマ・40週への平準化<br>詳細解説</h1>
+    <div class="hdr-sub">論点整理 第五章「余白の創出を通じた教育の質の向上」より</div>
+    <div class="hdr-core">
+      週29コマ × 35週 という慣習を、<br>
+      週28コマ × 40週 に変えるだけで教師も子どもも「余白」が生まれる
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 1: 思い込みの正体 -->
+    <div class="card card-problem">
+      <span class="sec-label lbl-problem">問題の正体｜なぜ「週29コマ固定」が慣習になったのか</span>
+      <h2>「35週」という数字の誤読が、根拠のない忙しさを生んでいる</h2>
+
+      <div class="myth-vs">
+        <div class="myth-box myth-wrong">
+          <span class="mb-tag tag-wrong">❌ よくある誤解</span>
+          <div class="mb-main">年間35週以上 → 1015÷35＝29コマ<br>だから週29コマが「標準」</div>
+          <div class="mb-sub">「35週という最低限の週数で1015コマを消化しなければならない」という思い込み。多くの学校が週29コマ×40週で1160コマ以上実施している。</div>
+        </div>
+        <div class="myth-arrow">→</div>
+        <div class="myth-box myth-right">
+          <span class="mb-tag tag-right">✅ 正しい理解</span>
+          <div class="mb-main">「年間35週以上」は最低ライン<br>40週で週28コマでも全く問題ない</div>
+          <div class="mb-sub">法令が定めているのは「1015コマの確保」と「35週以上の実施」の2点のみ。週あたりのコマ数に上限・規定はない。</div>
+        </div>
+      </div>
+
+      <div class="rule-note">
+        📋 <strong>学校教育法施行規則が定めていること（小・中学校）</strong><br>
+        ① 年間の<strong>標準総授業時数：1015単位時間</strong>（これを確保すること）<br>
+        ② 年間<strong>35週以上</strong>にわたって授業を行うよう計画すること<br>
+        ③ 週あたりのコマ数：<strong>規定なし</strong>（29コマでも28コマでも27コマでもOK）<br>
+        ④ 1015コマを上回る授業時数の設定を強制する規定：<strong>なし</strong>
+      </div>
+    </div>
+
+    <!-- 2: 計算 -->
+    <div class="card card-calc">
+      <span class="sec-label lbl-calc">数字で確認｜どちらも1015コマに収まる</span>
+      <h2>週29コマ（現状）と週28コマ（改善後）を比較する</h2>
+
+      <div class="calc-compare">
+        <div class="calc-box calc-before">
+          <div class="cb-head cb-before-h">❌ 現状：週29コマ × ≒35週 で計算</div>
+          <div class="calc-row"><span class="cr-label">週あたりコマ数</span><span class="cr-val">29 コマ</span></div>
+          <div class="calc-row"><span class="cr-label">実際の授業週数（平均）</span><span class="cr-val">約 40 週</span></div>
+          <div class="calc-row"><span class="cr-label">週29コマ × 40週</span><span class="cr-val">= 1,160 コマ</span></div>
+          <div class="calc-row"><span class="cr-label">標準（必要な授業時数）</span><span class="cr-val">1,015 コマ</span></div>
+          <div class="calc-total ct-before">
+            <div class="ct-num">+145 コマ</div>
+            <div class="ct-label">標準を超過。教師・子ども双方に余白なし</div>
+          </div>
+        </div>
+
+        <div class="calc-box calc-after">
+          <div class="cb-head cb-after-h">✅ 改善後：週28コマ × 40週 で計算</div>
+          <div class="calc-row"><span class="cr-label">週あたりコマ数</span><span class="cr-val">28 コマ</span></div>
+          <div class="calc-row"><span class="cr-label">授業週数</span><span class="cr-val">40 週</span></div>
+          <div class="calc-row"><span class="cr-label">28コマ × 40週</span><span class="cr-val">= 1,120 コマ</span></div>
+          <div class="calc-row"><span class="cr-label">−学活以外の特活（平均）</span><span class="cr-val">− 60 コマ</span></div>
+          <div class="calc-row"><span class="cr-label">−欠課・欠時（始終業式等）</span><span class="cr-val">− 45 コマ</span></div>
+          <div class="calc-total ct-after">
+            <div class="ct-num">= 1,015 コマ</div>
+            <div class="ct-label">標準ぴったり確保。余白が生まれる</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-eq-note">
+        📌 週28コマ × 40週 でも、特別活動・欠課を除くと授業時数は <strong>1,015コマ</strong> になる。<br>
+        令和6年度時点で、<strong>小学校の約2割（20%）</strong> がすでに週28コマで実施している。
+      </div>
+    </div>
+
+    <!-- 3: 具体例 -->
+    <div class="card card-example">
+      <span class="sec-label lbl-example">具体例｜実際の編成手順（論点整理 第五章より）</span>
+      <h2>週28コマへの組み替えは、5ステップで完成する</h2>
+
+      <div class="school-tabs">
+        <button class="tab-btn active" onclick="showTab('elem')">🏫 小学校（週28コマ）</button>
+        <button class="tab-btn" onclick="showTab('mid')">🏫 中学校（週27コマ）</button>
+      </div>
+
+      <!-- 小学校 -->
+      <div class="example-content show" id="tab-elem">
+        <div class="ex-steps">
+          <div class="ex-step">
+            <div class="es-num">STEP 1</div>
+            <div class="es-icon">📆</div>
+            <div class="es-title">総授業日数を決定</div>
+            <div class="es-val">200 日</div>
+            <div class="es-unit">（≒ 40週）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 2</div>
+            <div class="es-icon">📊</div>
+            <div class="es-title">週あたり時数を設定</div>
+            <div class="es-val">28 コマ</div>
+            <div class="es-unit">（月5・火6・水5・木6・金6）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 3</div>
+            <div class="es-icon">🎒</div>
+            <div class="es-title">特別活動の時数を確認</div>
+            <div class="es-val">60 コマ</div>
+            <div class="es-unit">（学活以外。全国平均62.8コマ）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 4</div>
+            <div class="es-icon">📋</div>
+            <div class="es-title">欠課・欠時を計算</div>
+            <div class="es-val">45 コマ</div>
+            <div class="es-unit">（始終業式・校内研修・懇談等）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 5</div>
+            <div class="es-icon">✅</div>
+            <div class="es-title">実施可能時数を確認</div>
+            <div class="es-val">1,015</div>
+            <div class="es-unit">コマ（標準に一致）</div>
+          </div>
+        </div>
+
+        <div class="ex-formula">
+          <div class="ef-row">
+            <span class="ef-num">40週 × 28コマ = 1,120</span>
+            <span class="ef-op">−</span>
+            <span class="ef-num">特活 60</span>
+            <span class="ef-op">−</span>
+            <span class="ef-num">欠課 45</span>
+            <span class="ef-op">=</span>
+            <span class="ef-result">1,015 コマ ✓</span>
+          </div>
+        </div>
+
+        <h3>欠課・欠時45コマの内訳（参考）</h3>
+        <div class="timetable-wrap">
+          <table class="timetable">
+            <thead>
+              <tr>
+                <th>内容</th>
+                <th>回数</th>
+                <th>コマ数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>始業式・終業式・入学式・卒業式等（午後分）</td><td>8回 × 2コマ</td><td class="td-num">16</td></tr>
+              <tr><td>校内研究のための午後</td><td>3学期 × 2コマ</td><td class="td-num">6</td></tr>
+              <tr><td>学期末成績処理期間の午後</td><td>3学期 × 6コマ</td><td class="td-num">18</td></tr>
+              <tr><td>個別懇談等のための午後</td><td>—</td><td class="td-num">5</td></tr>
+              <tr style="background:#f0fff4"><td><strong>合計</strong></td><td>—</td><td class="td-num" style="color:#276749"><strong>45</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 中学校 -->
+      <div class="example-content" id="tab-mid">
+        <div class="ex-steps">
+          <div class="ex-step">
+            <div class="es-num">STEP 1</div>
+            <div class="es-icon">📆</div>
+            <div class="es-title">総授業日数を決定</div>
+            <div class="es-val">205 日</div>
+            <div class="es-unit">（≒ 41週）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 2</div>
+            <div class="es-icon">📊</div>
+            <div class="es-title">週あたり時数を設定</div>
+            <div class="es-val">27 コマ</div>
+            <div class="es-unit">（月5・火5・水5・木6・金5 など）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 3</div>
+            <div class="es-icon">🎒</div>
+            <div class="es-title">特別活動の時数を確認</div>
+            <div class="es-val">45 コマ</div>
+            <div class="es-unit">（学活以外。全国平均48.1コマ）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 4</div>
+            <div class="es-icon">📋</div>
+            <div class="es-title">欠課・欠時を計算</div>
+            <div class="es-val">47 コマ</div>
+            <div class="es-unit">（始終業式・校内研修・懇談等）</div>
+          </div>
+          <div class="ex-step">
+            <div class="es-num">STEP 5</div>
+            <div class="es-icon">✅</div>
+            <div class="es-title">実施可能時数を確認</div>
+            <div class="es-val">1,015</div>
+            <div class="es-unit">コマ（標準に一致）</div>
+          </div>
+        </div>
+
+        <div class="ex-formula">
+          <div class="ef-row">
+            <span class="ef-num">41週 × 27コマ = 1,107</span>
+            <span class="ef-op">−</span>
+            <span class="ef-num">特活 45</span>
+            <span class="ef-op">−</span>
+            <span class="ef-num">欠課 47</span>
+            <span class="ef-op">=</span>
+            <span class="ef-result">1,015 コマ ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: 効果 -->
+    <div class="card card-effect">
+      <span class="sec-label lbl-effect">効果｜何が変わるのか</span>
+      <h2>週1コマ減らすだけで、学校全体に3つの変化が起きる</h2>
+      <div class="effect-grid">
+        <div class="eff-item">
+          <div class="eff-icon">👩‍🏫</div>
+          <div class="eff-title">教師の持ちコマが減る</div>
+          <div class="eff-body">週1コマ減 × 年間40週 ＝ 年間40コマの授業準備・教材研究時間が確保できる。特に若手教員（全体の17%超）にとって大きな余裕。</div>
+          <span class="eff-num">年間 −40コマ</span>
+        </div>
+        <div class="eff-item">
+          <div class="eff-icon">🧒</div>
+          <div class="eff-title">子どもに「余白」が生まれる</div>
+          <div class="eff-body">削減したコマを「裁量的な時間」に転換することで、個別探究・読書・自律的な学習活動の時間を学校の計画に組み込める。</div>
+          <span class="eff-num">年間 +40コマ の余白</span>
+        </div>
+        <div class="eff-item">
+          <div class="eff-icon">📈</div>
+          <div class="eff-title">授業の質が上がる</div>
+          <div class="eff-body">「授業時数を消化する」プレッシャーが下がり、単元全体を見通した授業設計・振り返り・改善サイクルが回しやすくなる。</div>
+          <span class="eff-num">深い学びへの転換</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: FAQ -->
+    <div class="card card-faq">
+      <span class="sec-label lbl-faq">FAQ｜校長がよく抱く疑問に答える</span>
+      <h2>「週28コマに変えて大丈夫？」への答え</h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span class="q-mark">Q</span>
+            <span class="q-text">標準授業時数を下回ったら法令違反にならないか？</span>
+          </div>
+          <div class="faq-a">
+            <span class="a-mark">A</span>
+            <div class="a-text">
+              <strong>不測の事態で標準を下回っても、それだけで法令違反にはなりません。</strong>文部科学省の通知（論点整理引用）でも「不測の事態により標準を下回ったことのみをもって法令に反するものではない」と明記されています。週28コマ×40週の計算では1015コマに収まるので、そもそも下回りません。
+            </div>
+          </div>
+        </div>
+        <hr class="faq-divider">
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span class="q-mark">Q</span>
+            <span class="q-text">保護者から「授業が少ない」と言われないか？</span>
+          </div>
+          <div class="faq-a">
+            <span class="a-mark">A</span>
+            <div class="a-text">
+              <strong>「授業コマ数＝教育の質」ではないことを、具体的な数字で説明できます。</strong>1015コマは確保したまま、「余白の時間を子どもの自律的な学習・探究に使う」と丁寧に説明することが大切。「授業を減らす」のではなく「授業の密度を高める」という文脈で伝える。
+            </div>
+          </div>
+        </div>
+        <hr class="faq-divider">
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span class="q-mark">Q</span>
+            <span class="q-text">時間割が複雑になって担当教師が混乱しないか？</span>
+          </div>
+          <div class="faq-a">
+            <span class="a-mark">A</span>
+            <div class="a-text">
+              <strong>デジタルツール（校務支援システム・クラウドシート）を活用すれば大幅に軽減できます。</strong>論点整理でも「時間割の複雑化への懸念を踏まえ、デジタルツールを活用した負担軽減を促進」と明記されています。曜日によって時数が違う週時程（例：月5・火6・水5・木6・金6）は一度テンプレートを作れば運用できます。
+            </div>
+          </div>
+        </div>
+        <hr class="faq-divider">
+
+        <div class="faq-item">
+          <div class="faq-q">
+            <span class="q-mark">Q</span>
+            <span class="q-text">今の学習指導要領のまま（改訂前）でも実施できるのか？</span>
+          </div>
+          <div class="faq-a">
+            <span class="a-mark">A</span>
+            <div class="a-text">
+              <strong>はい。現行制度のままで今年度から実施できます。</strong>令和6年度時点で小学校の約2割がすでに週28コマ体制を取っています。論点整理でも「改訂を待たずに行うべきこと」として、週あたりコマ数の平準化を明示的に促進しています。
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6: 校長のアクション -->
+    <div class="card card-action">
+      <span class="sec-label lbl-action">✅ 校長がやること（具体的な3ステップ）</span>
+      <h2>週28コマへの移行を実現するための手順</h2>
+      <div class="action-steps">
+        <div class="as-item">
+          <div class="as-step">1</div>
+          <div class="as-body">
+            <div class="as-title">教務主任と「今年度の実際の授業時数」を確認する</div>
+            <div class="as-desc">週何コマ × 何週で年間何コマ実施しているか集計。1015を超過している場合、その超過分が「無駄な忙しさ」の正体。まず現状を数字で把握することが出発点。</div>
+          </div>
+          <span class="as-when w-now">今週中</span>
+        </div>
+        <div class="as-item">
+          <div class="as-step">2</div>
+          <div class="as-body">
+            <div class="as-title">来年度の年間行事計画から「週28コマ版の時数計算」を試算する</div>
+            <div class="as-desc">本ページの5ステップ計算を使い、自校の特別活動時数・欠課数を代入して試算。「1015コマに収まるか」を確認するだけでよい。教務主任に作業を依頼してもよい。</div>
+          </div>
+          <span class="as-when w-now">今学期中</span>
+        </div>
+        <div class="as-item">
+          <div class="as-step">3</div>
+          <div class="as-body">
+            <div class="as-title">来年度計画に「週28コマ体制」を組み込み、職員・保護者に説明する</div>
+            <div class="as-desc">職員会議で「なぜ減らすのか（余白＝授業の質向上）」を共有。保護者向けには「1015コマは確保したまま」という数字を使った説明で納得を得る。市教委への事前報告も忘れずに。</div>
+          </div>
+          <span class="as-when w-soon">来年度計画</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="card-sum">
+      <div class="sum-lbl">🎯 ひと言まとめ</div>
+      <div class="sum-text">
+        「週29コマ固定」は思い込み。週28コマ × 40週でも1015コマは確保できる。<br>
+        <strong>今年度から動ける。まず自校の時数を数えることから始める。</strong>
+      </div>
+      <div class="sum-sub">
+        根拠法令：学校教育法施行規則（標準授業時数1015・年間35週以上）<br>
+        先行事例：令和6年度時点で小学校の約2割が週28コマ体制を実施済
+      </div>
+    </div>
+
+    <div class="foot">
+      出典：中央教育審議会 教育課程企画特別部会「論点整理」第五章（令和7年9月25日）｜補足イメージ５－②
+    </div>
+
+  </div><!-- /wrap -->
+
+  <script>
+    function showTab(id) {
+      document.querySelectorAll('.example-content').forEach(el => el.classList.remove('show'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('show');
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

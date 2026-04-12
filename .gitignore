@@ -1,0 +1,7 @@
+# PDFファイル（容量が大きいため除外）
+*.pdf
+
+# OS生成ファイル
+.DS_Store
+Thumbs.db
+desktop.ini

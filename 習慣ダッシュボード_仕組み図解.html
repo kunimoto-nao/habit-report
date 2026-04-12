@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>習慣ダッシュボード — 仕組みの全体像</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+      background: #0f1117;
+      color: #e8eaf6;
+      padding: 36px 28px;
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .header .sub {
+      font-size: 13px;
+      color: #7986cb;
+      margin-top: 6px;
+    }
+
+    /* ===== FLOW ===== */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ===== STEP CARD ===== */
+    .step {
+      width: 100%;
+      border-radius: 14px;
+      padding: 22px 26px;
+      position: relative;
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .step-badge {
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .step-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .step-icon {
+      font-size: 26px;
+      margin-right: 4px;
+    }
+
+    /* STEP 1 — Trigger */
+    .step-1 {
+      background: linear-gradient(135deg, #1a237e22, #1a237e44);
+      border: 1.5px solid #3949ab;
+    }
+    .step-1 .step-badge { background: #3949ab; color: #fff; }
+    .step-1 .step-title { color: #7986cb; }
+
+    /* STEP 2 — Data Source */
+    .step-2 {
+      background: linear-gradient(135deg, #1b5e2022, #1b5e2044);
+      border: 1.5px solid #388e3c;
+    }
+    .step-2 .step-badge { background: #388e3c; color: #fff; }
+    .step-2 .step-title { color: #81c784; }
+
+    /* STEP 3 — Processing */
+    .step-3 {
+      background: linear-gradient(135deg, #e65100 14%, #33000022 100%);
+      background: linear-gradient(135deg, #33000022, #e6510022);
+      border: 1.5px solid #e65100;
+    }
+    .step-3 .step-badge { background: #e65100; color: #fff; }
+    .step-3 .step-title { color: #ffb74d; }
+
+    /* STEP 4 — Output */
+    .step-4 {
+      background: linear-gradient(135deg, #4a148c22, #4a148c44);
+      border: 1.5px solid #7b1fa2;
+    }
+    .step-4 .step-badge { background: #7b1fa2; color: #fff; }
+    .step-4 .step-title { color: #ce93d8; }
+
+    /* ===== ARROW ===== */
+    .arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2px 0;
+    }
+    .arrow-line {
+      width: 2px;
+      height: 28px;
+      background: linear-gradient(to bottom, #444, #666);
+    }
+    .arrow-label {
+      font-size: 11px;
+      color: #888;
+      background: #1a1a2e;
+      border: 1px solid #333;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin: 2px 0;
+    }
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 10px solid #666;
+    }
+
+    /* ===== INNER CONTENT ===== */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .info-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+    }
+    .info-item .label {
+      font-size: 10px;
+      color: #888;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .info-item .value {
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    .info-item .value strong { color: #fff; }
+    .info-item .value code {
+      background: rgba(255,255,255,0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', monospace;
+      font-size: 11px;
+      color: #a5d6a7;
+    }
+
+    /* ===== PERIOD TABLE ===== */
+    .period-table {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .period-pill {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,183,77,0.3);
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .period-pill .p-label { color: #ffb74d; font-weight: bold; }
+    .period-pill .p-days { color: #999; font-size: 10px; margin-top: 2px; }
+
+    /* ===== DATA STRUCT ===== */
+    .data-struct {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 12px;
+      font-family: 'Consolas', monospace;
+      color: #a5d6a7;
+      line-height: 1.7;
+    }
+    .data-struct .comment { color: #666; }
+
+    /* ===== DASHBOARD PREVIEW ===== */
+    .dashboard-preview {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cat-badge {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .cat-1 { background: #1a237e55; border: 1px solid #5c6bc0; color: #9fa8da; }
+    .cat-2 { background: #004d4055; border: 1px solid #00897b; color: #80cbc4; }
+    .cat-3 { background: #3e272055; border: 1px solid #a1887f; color: #d7ccc8; }
+    .cat-4 { background: #4a148c55; border: 1px solid #ab47bc; color: #e1bee7; }
+
+    .bucket-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .bucket {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      border: 1px solid #444;
+      color: #bbb;
+    }
+
+    /* ===== FULL FLOW MINI ===== */
+    .mini-flow {
+      max-width: 780px;
+      margin: 32px auto 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #333;
+      border-radius: 14px;
+      padding: 22px 28px;
+    }
+    .mini-flow h3 {
+      font-size: 13px;
+      color: #7986cb;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .mini-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .mini-step {
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+    .mini-step .ms-icon { font-size: 22px; margin-bottom: 6px; }
+    .mini-step .ms-title { font-weight: bold; margin-bottom: 3px; }
+    .mini-step .ms-sub { color: #888; font-size: 10px; line-height: 1.4; }
+    .ms-1 { background: #1a237e33; border: 1px solid #3949ab55; }
+    .ms-2 { background: #1b5e2033; border: 1px solid #388e3c55; }
+    .ms-3 { background: #bf360c33; border: 1px solid #e6510055; }
+    .ms-4 { background: #4a148c33; border: 1px solid #7b1fa255; }
+    .ms-arrow {
+      font-size: 18px;
+      color: #444;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🔁 習慣ダッシュボード — 仕組みの全体像</h1>
+    <div class="sub">毎週日曜 8:00 に自動起動 → データ集計 → ブラウザ表示</div>
+  </div>
+
+  <div class="flow">
+
+    <!-- STEP 1: Trigger -->
+    <div class="step step-1">
+      <div class="step-header">
+        <span class="step-icon">⏰</span>
+        <span class="step-badge">TRIGGER　トリガー</span>
+        <span class="step-title">いつ・何をきっかけに動くか</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">起動タイミング</div>
+          <div class="value"><strong>毎週日曜日 午前 8:00</strong> に自動起動</div>
+        </div>
+        <div class="info-item">
+          <div class="label">起動の仕組み</div>
+          <div class="value">
+            <code>setup-dashboard-schedule.bat</code><br>
+            Windows タスクスケジューラに<br>「習慣ダッシュボード週次」として登録
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">ブラウザが自動で起動し、GASのURLへアクセス</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- STEP 2: Data Source -->
+    <div class="step step-2">
+      <div class="step-header">
+        <span class="step-icon">📊</span>
+        <span class="step-badge">SOURCE　ソース元</span>
+        <span class="step-title">データがある場所</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">データの場所</div>
+          <div class="value">
+            <strong>Google スプレッドシート</strong>（クラウド上）<br>
+            対象シート: <code>gid=1728547844</code>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="label">列の構造</div>
+          <div class="value">
+            列A：日付　　列B：曜日<br>
+            列C〜AY（3〜55列目）：<br>
+            各習慣の <strong>0 / 1</strong> が記録
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="font-size:11px;color:#888;margin-bottom:8px;">習慣カテゴリ（4種類）</div>
+        <div class="dashboard-preview" style="margin-top:0; padding: 10px 12px;">
+          <span class="cat-badge cat-1">👨‍👩‍👧 家族</span>
+          <span class="cat-badge cat-2">❄️ cool</span>
+          <span class="cat-badge cat-3">🏗️ プロ土台</span>
+          <span class="cat-badge cat-4">⚡ ハイパフォーマー</span>
+        </div>
+        <div style="font-size:11px;color:#888;margin-top:10px;margin-bottom:6px;">バケット（3種類）</div>
+        <div class="bucket-row">
+          <span class="bucket">📅 毎日</span>
+          <span class="bucket">📌 固定</span>
+          <span class="bucket">🎲 不定期</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">GASがスプレッドシートの全行を読み取り</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- STEP 3: Processing -->
+    <div class="step step-3">
+      <div class="step-header">
+        <span class="step-icon">⚙️</span>
+        <span class="step-badge">PROCESS　処理する場所</span>
+        <span class="step-title">データを加工してレポートにする場所</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">処理の場所</div>
+          <div class="value">
+            <strong>Google Apps Script</strong><br>
+            （クラウド上のサーバーサイド）<br>
+            <code>Code.gs</code> の <code>getHabitStats()</code>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="label">何をする</div>
+          <div class="value">
+            スプレッドシートの全行を走査し<br>
+            各習慣の<strong>達成率</strong>を<br>
+            期間別に集計する
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="font-size:11px;color:#888;margin-bottom:8px;">集計する期間</div>
+        <div class="period-table">
+          <div class="period-pill"><div class="p-label">1週間</div><div class="p-days">7日</div></div>
+          <div class="period-pill"><div class="p-label">1ヶ月</div><div class="p-days">30日</div></div>
+          <div class="period-pill"><div class="p-label">3ヶ月</div><div class="p-days">90日</div></div>
+          <div class="period-pill"><div class="p-label">6ヶ月</div><div class="p-days">180日</div></div>
+          <div class="period-pill"><div class="p-label">1年</div><div class="p-days">365日</div></div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="font-size:11px;color:#888;margin-bottom:6px;">集計結果の形式</div>
+        <div class="data-struct">
+          { <br>
+          &nbsp;&nbsp;done: <span style="color:#ffb74d;">完了数</span>,<br>
+          &nbsp;&nbsp;total: <span style="color:#ffb74d;">対象日数</span>,<br>
+          &nbsp;&nbsp;rate: <span style="color:#ffb74d;">達成率%</span><br>
+          } <span class="comment">← カテゴリ別に整形</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Dashboard.html をブラウザに返す</div>
+      <div class="arrow-line"></div>
+      <div class="arrow-head"></div>
+    </div>
+
+    <!-- STEP 4: Output -->
+    <div class="step step-4">
+      <div class="step-header">
+        <span class="step-icon">🖥️</span>
+        <span class="step-badge">OUTPUT　届ける先</span>
+        <span class="step-title">完成したレポートを届ける先</span>
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">表示場所</div>
+          <div class="value">
+            <strong>ブラウザ上のWebアプリ</strong><br>
+            Google Apps Script の<br>デプロイURL（<code>...exec?page=dashboard</code>）
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="label">表示されるもの</div>
+          <div class="value">
+            <code>Dashboard.html</code> がレンダリングされ<br>
+            <strong>習慣達成率ダッシュボード</strong>として<br>
+            ブラウザ上に表示される
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px; background:rgba(255,255,255,0.05); border-radius:8px; padding:12px 14px;">
+        <div style="font-size:11px;color:#888;margin-bottom:8px;">ダッシュボードに表示される内容のイメージ</div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:8px 12px;font-size:11px;color:#ccc;border:1px solid #333;">
+            📅 直近1週間<br><span style="color:#ce93d8;font-size:14px;font-weight:bold;">85%</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:8px 12px;font-size:11px;color:#ccc;border:1px solid #333;">
+            🗓️ 直近1ヶ月<br><span style="color:#ce93d8;font-size:14px;font-weight:bold;">72%</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:8px 12px;font-size:11px;color:#ccc;border:1px solid #333;">
+            📆 直近3ヶ月<br><span style="color:#ce93d8;font-size:14px;font-weight:bold;">68%</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:8px 12px;font-size:11px;color:#ccc;border:1px solid #333;flex:1;min-width:120px;">
+            カテゴリ別に分けて表示<br>
+            <span style="color:#9fa8da;font-size:10px;">家族 / cool / プロ土台 / ハイパフォーマー</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /flow -->
+
+  <!-- 全体フロー ミニ版 -->
+  <div class="mini-flow">
+    <h3>⚡ 全体フロー（まとめ）</h3>
+    <div class="mini-steps">
+      <div class="mini-step ms-1">
+        <div class="ms-icon">⏰</div>
+        <div class="ms-title" style="color:#7986cb;">毎週日曜 8:00</div>
+        <div class="ms-sub">Windowsタスク<br>スケジューラが起動<br>（.bat で設定済み）</div>
+      </div>
+      <div class="ms-arrow">▶</div>
+      <div class="mini-step ms-2">
+        <div class="ms-icon">📊</div>
+        <div class="ms-title" style="color:#81c784;">スプレッドシート</div>
+        <div class="ms-sub">0/1データが<br>クラウドに蓄積<br>（列C〜AY）</div>
+      </div>
+      <div class="ms-arrow">▶</div>
+      <div class="mini-step ms-3">
+        <div class="ms-icon">⚙️</div>
+        <div class="ms-title" style="color:#ffb74d;">GAS 集計処理</div>
+        <div class="ms-sub">getHabitStats()<br>5期間×全習慣<br>を自動集計</div>
+      </div>
+      <div class="ms-arrow">▶</div>
+      <div class="mini-step ms-4">
+        <div class="ms-icon">🖥️</div>
+        <div class="ms-title" style="color:#ce93d8;">ダッシュボード表示</div>
+        <div class="ms-sub">Dashboard.html<br>がブラウザに<br>レンダリング</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>次期学習指導要領 論点整理 第一章｜校長向けアクションプラン</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif;
+      background: #f0f3f8;
+      color: #1a202c;
+      padding: 24px 14px 48px;
+    }
+
+    /* ======= HEADER ======= */
+    .hdr {
+      max-width: 820px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    .hdr-tag {
+      display: inline-block;
+      background: #2d3748;
+      color: #e2e8f0;
+      font-size: 11px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .hdr h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #1a202c;
+      line-height: 1.35;
+    }
+    .hdr .hdr-sub {
+      font-size: 12.5px;
+      color: #718096;
+      margin-top: 5px;
+    }
+
+    /* ======= WRAP ======= */
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ======= CARD ======= */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px 22px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .sec-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 3px 11px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    /* ======= STEP 1: WHY ======= */
+    .card-why { border-left: 5px solid #667eea; }
+    .lbl-why { background: #ebedff; color: #434190; }
+    .card-why h2 { font-size: 14px; font-weight: 800; margin-bottom: 10px; color: #2d3748; }
+    .why-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .w-item {
+      background: #f7f8ff;
+      border: 1.5px solid #c5c8f0;
+      border-radius: 10px;
+      padding: 11px 13px;
+    }
+    .w-item .wi-hd {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #434190;
+      margin-bottom: 4px;
+    }
+    .w-item .wi-bd {
+      font-size: 11.5px;
+      color: #4a5568;
+      line-height: 1.55;
+    }
+
+    /* ======= STEP 2: 3柱 ======= */
+    .card-dir { border-left: 5px solid #38a169; }
+    .lbl-dir { background: #e6fffa; color: #234e52; }
+    .dir-core {
+      background: linear-gradient(120deg, #276749, #2c7a7b);
+      color: white;
+      border-radius: 10px;
+      padding: 13px 18px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .dir-core .dc-s { font-size: 11px; font-weight: 400; opacity: 0.85; margin-top: 3px; }
+    .dir-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .dc {
+      border-radius: 12px;
+      padding: 13px 12px;
+    }
+    .dc-a { background: #fff5f5; border: 2px solid #fc8181; }
+    .dc-b { background: #fffbeb; border: 2px solid #f6ad55; }
+    .dc-c { background: #f0fff4; border: 2px solid #68d391; }
+
+    .dc .dc-num { font-size: 26px; font-weight: 900; line-height: 1; }
+    .ca { color: #c53030; } .cb { color: #c05621; } .cc { color: #22543d; }
+    .dc .dc-chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: inline-block;
+      margin: 4px 0 6px;
+    }
+    .ta { background: #fed7d7; color: #c53030; }
+    .tb { background: #feebc8; color: #c05621; }
+    .tc { background: #c6f6d5; color: #22543d; }
+    .dc .dc-title {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      color: #1a202c;
+    }
+    .dc ul { list-style: none; }
+    .dc ul li {
+      font-size: 11.5px;
+      color: #2d3748;
+      padding: 2px 0 2px 14px;
+      position: relative;
+      line-height: 1.45;
+    }
+    .dc ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      font-size: 9px;
+      top: 4px;
+      color: #a0aec0;
+    }
+    /* 学校現場への示唆 */
+    .dc .school-note {
+      margin-top: 10px;
+      padding: 7px 9px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .sn-a { background: #fff; border-left: 3px solid #c53030; color: #742a2a; }
+    .sn-b { background: #fff; border-left: 3px solid #c05621; color: #7b341e; }
+    .sn-c { background: #fff; border-left: 3px solid #22543d; color: #22543d; }
+    .dc .school-note .sn-hd {
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      opacity: 0.75;
+      margin-bottom: 2px;
+    }
+
+    /* ======= ARROW ======= */
+    .arr { text-align: center; font-size: 22px; color: #cbd5e0; margin: -4px 0; }
+
+    /* ======= STEP 3: ACTION PLAN ======= */
+    .card-action { border-left: 5px solid #e53e3e; }
+    .lbl-action { background: #fff5f5; color: #c53030; }
+    .card-action h2 {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      color: #1a202c;
+    }
+
+    /* タイミング行 */
+    .timing-block {
+      margin-bottom: 16px;
+    }
+    .timing-block:last-child { margin-bottom: 0; }
+    .timing-hd {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .timing-tag {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .tt-now  { background: #c53030; color: white; }
+    .tt-soon { background: #dd6b20; color: white; }
+    .tt-next { background: #276749; color: white; }
+    .timing-line { flex: 1; height: 2px; border-radius: 2px; }
+    .tl-now  { background: #fed7d7; }
+    .tl-soon { background: #feebc8; }
+    .tl-next { background: #c6f6d5; }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .action-grid.one-col { grid-template-columns: 1fr; }
+
+    .ac {
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+    }
+    .ac-now  { background: #fff5f5; border: 1.5px solid #fed7d7; }
+    .ac-soon { background: #fffaf0; border: 1.5px solid #feebc8; }
+    .ac-next { background: #f0fff4; border: 1.5px solid #c6f6d5; }
+
+    .ac-icon { font-size: 22px; flex-shrink: 0; }
+    .ac-body { flex: 1; }
+    .ac-body .ac-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1a202c;
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+    .ac-body .ac-desc {
+      font-size: 11.5px;
+      color: #4a5568;
+      line-height: 1.55;
+    }
+    .ac-body .ac-ref {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      color: #718096;
+      background: rgba(0,0,0,0.05);
+    }
+
+    /* ======= SCHEDULE ======= */
+    .card-sched { background: #2d3748; color: white; border-radius: 14px; padding: 16px 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.12); }
+    .sched-title { font-size: 11px; color: #a0aec0; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .sched-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .sched-item { flex: 1; min-width: 110px; }
+    .sched-item .s-year {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fefcbf;
+      margin-bottom: 5px;
+    }
+    .sched-item .s-box {
+      background: #4a5568;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      color: #e2e8f0;
+      line-height: 1.45;
+      height: 100%;
+    }
+    .sched-item.now .s-box {
+      background: #c53030;
+      font-weight: 700;
+      color: white;
+    }
+    .sched-item.can .s-box {
+      background: #276749;
+      font-weight: 700;
+      color: white;
+    }
+    .s-arr { padding: 0 5px; display: flex; align-items: center; color: #718096; font-size: 18px; flex-shrink: 0; margin-top: 20px; }
+
+    /* ======= SUMMARY ======= */
+    .card-sum {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      color: white;
+      border-radius: 14px;
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .sum-lbl { font-size: 11px; opacity: 0.65; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .sum-text { font-size: 16px; font-weight: 800; line-height: 1.7; }
+    .sum-sub { font-size: 12px; opacity: 0.75; margin-top: 10px; line-height: 1.65; }
+
+    .foot { text-align: center; font-size: 11px; color: #a0aec0; margin-top: 14px; }
+
+    /* ======= RESPONSIVE ======= */
+    @media (max-width: 600px) {
+      .why-row, .dir-cols, .action-grid { grid-template-columns: 1fr; }
+      .card { padding: 14px 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-tag">中央教育審議会 論点整理｜令和7年9月25日</div>
+    <h1>次期学習指導要領「論点整理」第一章<br>校長アクションプラン</h1>
+    <div class="hdr-sub">基本的な考え方（3方向性）を読んで、校長が今日から動くための整理</div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- STEP1: WHY -->
+    <div class="card card-why">
+      <span class="sec-label lbl-why">背景｜なぜ今、改訂するのか</span>
+      <h2>社会の急激な変化が、現行の学校教育の限界を露呈している</h2>
+      <div class="why-row">
+        <div class="w-item">
+          <div class="wi-hd">🤖 生成AI・デジタル化の加速</div>
+          <div class="wi-bd">「正解を知っている」だけでは通用しない時代に。独自の発想・判断・創造の力が求められる。生成AIが知識を代替する以上、教育の重点が変わらざるを得ない。</div>
+        </div>
+        <div class="w-item">
+          <div class="wi-hd">👨‍👩‍👧‍👦 子どもの多様化の現実</div>
+          <div class="wi-bd">35人学級に不登校傾向4.1人・学習困難2.2人・外国籍0.5人・特異な才能0.8人が在籍。均一な教育課程では「誰一人取り残さない」を実現できない。</div>
+        </div>
+        <div class="w-item">
+          <div class="wi-hd">⚠️ 現行指導要領の課題</div>
+          <div class="wi-bd">「正解主義・同調圧力」への偏りから脱却できていない。自分の意見を持てる子・夢を持てる子の割合が国際比較で低水準。「深い学び」も道半ば。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- STEP2: 3方向性 -->
+    <div class="card card-dir">
+      <span class="sec-label lbl-dir">核心｜改訂を貫く3方向性（三位一体で進める）</span>
+      <div class="dir-core">
+        目標：「多様な子供たちの『深い学び』を確かなものに」
+        <div class="dc-s">どれか一つではなく、3つを同時に具現化する</div>
+      </div>
+      <div class="dir-cols">
+
+        <div class="dc dc-a">
+          <div class="dc-num ca">①</div>
+          <span class="dc-chip ta">Excellence</span>
+          <div class="dc-title">「主体的・対話的で深い学び」の実装</div>
+          <ul>
+            <li>学習指導要領を<strong>中核的な概念中心</strong>に構造化・表形式化</li>
+            <li>デジタル学習指導要領で参照・指導案作成を容易に</li>
+            <li>小に「情報の領域」付加、中に「情報・技術科」新設</li>
+            <li>知識を「生きて働く確かなもの」として習得させる</li>
+          </ul>
+          <div class="school-note sn-a">
+            <div class="sn-hd">▶ 校長が学校に問うべき問い</div>
+            授業は「教科書の内容を網羅する」になっていないか？<br>単元の「中核概念」を教師は意識できているか？
+          </div>
+        </div>
+
+        <div class="dc dc-b">
+          <div class="dc-num cb">②</div>
+          <span class="dc-chip tb">Equity</span>
+          <div class="dc-title">多様性の包摂</div>
+          <ul>
+            <li>「調整授業時数制度」新設：教科時数を調整し他に回せる</li>
+            <li>不登校・特異な才能の子に<strong>特別の教育課程</strong>を新設</li>
+            <li>「裁量的な時間」で個に応じた学習支援を実現</li>
+            <li>学年区分の柔軟化・高校の単位制度の見直し</li>
+          </ul>
+          <div class="school-note sn-b">
+            <div class="sn-hd">▶ 校長が学校に問うべき問い</div>
+            不登校・才能特性の子の学びは「出席」頼みになっていないか？<br>個々の実態に応じた教育課程を組む余地があるか？
+          </div>
+        </div>
+
+        <div class="dc dc-c">
+          <div class="dc-num cc">③</div>
+          <span class="dc-chip tc">Feasibility</span>
+          <div class="dc-title">実現可能性の確保</div>
+          <ul>
+            <li>教師・子どもの双方に「余白」を創出する</li>
+            <li>週29コマ固定の慣習を見直し<strong>週28コマ・40週</strong>へ平準化　<a href="週28コマ_詳細.html" target="_blank" style="font-size:11px;font-weight:700;color:#276749;background:#f0fff4;border:1.5px solid #68d391;border-radius:10px;padding:2px 9px;text-decoration:none;white-space:nowrap;">詳細を見る →</a></li>
+            <li>教科書を中核概念中心に精選：「厚い教科書を全部教える」から脱却</li>
+            <li>デジタルツールで校務・授業準備の負担軽減</li>
+          </ul>
+          <div class="school-note sn-c">
+            <div class="sn-hd">▶ 校長が学校に問うべき問い</div>
+            標準授業時数(1015)を大幅に超えた計画になっていないか？<br>教師が教材研究・振り返りに使える時間はあるか？
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="arr">↓ 受けて、校長が取る行動</div>
+
+    <!-- STEP3: ACTION -->
+    <div class="card card-action">
+      <span class="sec-label lbl-action">✅ 校長アクションプラン</span>
+      <h2>「論点整理 第一章」を読んだ校長がやること</h2>
+
+      <!-- 今週中 -->
+      <div class="timing-block">
+        <div class="timing-hd">
+          <span class="timing-tag tt-now">今週中</span>
+          <div class="timing-line tl-now"></div>
+        </div>
+        <div class="action-grid">
+          <div class="ac ac-now">
+            <div class="ac-icon">📢</div>
+            <div class="ac-body">
+              <div class="ac-title">職員会議でこの図解を使い「3方向性」を全教員に共有する</div>
+              <div class="ac-desc">「次期改訂がどこに向かっているか」を全教員が共通理解することで、以降の授業研究・校内研修の文脈が揃う。113ページの原文ではなく、この1枚で済む。</div>
+              <span class="ac-ref">関連：論点整理 第一章 p.2〜6</span>
+            </div>
+          </div>
+          <div class="ac ac-now">
+            <div class="ac-icon">🔍</div>
+            <div class="ac-body">
+              <div class="ac-title">「深い学び（Excellence）」が実現できているか、授業の現状を教師と確認する</div>
+              <div class="ac-desc">「中核的な概念の深い理解」になっているか、それとも「個別知識の羅列」にとどまっているか。1教科1単元を観察するだけでよい。次の授業研究のテーマに設定する。</div>
+              <span class="ac-ref">関連：①Excellence（構造化の方向性）</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今学期中 -->
+      <div class="timing-block">
+        <div class="timing-hd">
+          <span class="timing-tag tt-soon">今学期中</span>
+          <div class="timing-line tl-soon"></div>
+        </div>
+        <div class="action-grid">
+          <div class="ac ac-soon">
+            <div class="ac-icon">📅</div>
+            <div class="ac-body">
+              <div class="ac-title">年間の授業時数・週あたりコマ数を教務と一緒に見直す</div>
+              <div class="ac-desc">週29コマ固定の根拠を再確認。週28コマ×40週でも1015コマに収まる（令和6年度で小学校の約2割が実施済）。教師の「余白」を確保することが③Feasibilityの第一歩。<br><a href="週28コマ_詳細.html" target="_blank" style="display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;color:#276749;background:#f0fff4;border:1.5px solid #68d391;border-radius:10px;padding:3px 12px;text-decoration:none;">📄 計算の根拠・実施手順を詳しく見る →</a></div>
+              <span class="ac-ref">関連：③Feasibility / 論点整理 第五章</span>
+            </div>
+          </div>
+          <div class="ac ac-soon">
+            <div class="ac-icon">👥</div>
+            <div class="ac-body">
+              <div class="ac-title">自校の多様な子どもの実態を担任・養護教諭と確認・記録する</div>
+              <div class="ac-desc">不登校（傾向含む）・発達特性・外国籍・特異な才能の子の人数と対応状況を把握。「特別の教育課程」制度新設に備えた実態把握の第一歩。市教委への情報提供にも活用。</div>
+              <span class="ac-ref">関連：②Equity / 論点整理 第三章</span>
+            </div>
+          </div>
+          <div class="ac ac-soon">
+            <div class="ac-icon">💻</div>
+            <div class="ac-body">
+              <div class="ac-title">探究・情報活用能力の育成状況を総合的な学習の時間で点検する</div>
+              <div class="ac-desc">「調べて発表して終わり」になっていないか確認。次期改訂では小学校「情報の領域」付加・中学校「情報・技術科」独立が方向性として示された。先行的な取組が評価される。</div>
+              <span class="ac-ref">関連：①Excellence / 論点整理 第四章</span>
+            </div>
+          </div>
+          <div class="ac ac-soon">
+            <div class="ac-icon">📝</div>
+            <div class="ac-body">
+              <div class="ac-title">「主体的に学習に取り組む態度」の評価方法を教員と見直す</div>
+              <div class="ac-desc">「ノート提出の頻度＝主体性」の形式評価になっていないか。論点整理では「個人内評価への変更」「4要素での再整理」が提起されている。早期に議論しておく価値がある。</div>
+              <span class="ac-ref">関連：論点整理 第六章</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 来年度計画 -->
+      <div class="timing-block">
+        <div class="timing-hd">
+          <span class="timing-tag tt-next">来年度計画に組む</span>
+          <div class="timing-line tl-next"></div>
+        </div>
+        <div class="action-grid">
+          <div class="ac ac-next">
+            <div class="ac-icon">🗓️</div>
+            <div class="ac-body">
+              <div class="ac-title">「調整授業時数制度」試行を見据えた校内カリキュラムの設計案を作る</div>
+              <div class="ac-desc">令和8年度から事例創出が加速する方針。一部教科の標準時数を調整し「裁量的な時間」を生み出す試行設計を校内でまとめ、市教委に提案できる状態にしておく。</div>
+              <span class="ac-ref">関連：②Equity / ③Feasibility / 論点整理 第三章②</span>
+            </div>
+          </div>
+          <div class="ac ac-next">
+            <div class="ac-icon">🎯</div>
+            <div class="ac-body">
+              <div class="ac-title">次期改訂に向けた学校の重点目標・グランドデザインを更新する</div>
+              <div class="ac-desc">答申は令和8年度中の予定。「深い学び・多様性・余白の確保」の3軸を来年度の学校経営計画に反映し、改訂を「外から来るもの」ではなく「自校から動くもの」に変える。</div>
+              <span class="ac-ref">関連：第一章 全体 / 第八章 スケジュール</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="card-sched">
+      <div class="sched-title">📅 改訂スケジュール（校長が把握しておく時間軸）</div>
+      <div class="sched-row">
+        <div class="sched-item now">
+          <div class="s-year">令和7年9月（今）</div>
+          <div class="s-box">論点整理<br>取りまとめ<br>← 今ここ</div>
+        </div>
+        <div class="s-arr">→</div>
+        <div class="sched-item">
+          <div class="s-year">令和8年 夏頃</div>
+          <div class="s-box">各教科WG<br>取りまとめ<br>（教科の詳細）</div>
+        </div>
+        <div class="s-arr">→</div>
+        <div class="sched-item">
+          <div class="s-year">令和8年度中</div>
+          <div class="s-box">中央教育審議会<br>答申<br>（全体骨格確定）</div>
+        </div>
+        <div class="s-arr">→</div>
+        <div class="sched-item">
+          <div class="s-year">その後 数年</div>
+          <div class="s-box">学習指導要領<br>告示・<br>全面実施</div>
+        </div>
+        <div class="s-arr">→</div>
+        <div class="sched-item can">
+          <div class="s-year">今年度から可能</div>
+          <div class="s-box">週28コマ化<br>時数見直し<br>実態把握</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="card-sum">
+      <div class="sum-lbl">🎯 ひと言まとめ</div>
+      <div class="sum-text">
+        「深く学ぶ・多様を包む・余白をつくる」の3軸が次期改訂の骨格。<br>
+        答申は令和8年度。ただし<strong>週28コマ化・実態把握・評価見直しは今年度から動ける。</strong>
+      </div>
+      <div class="sum-sub">
+        今週やること：① この図解で職員に共有 ② 「深い学び」視点で1単元を観察<br>
+        今学期やること：③ 授業時数の見直し ④ 多様な子の実態把握 ⑤ 評価方法の点検<br>
+        来年度計画：⑥ 調整授業時数の試行設計 ⑦ 学校グランドデザインの更新
+      </div>
+    </div>
+
+    <div class="foot">
+      出典：中央教育審議会 教育課程企画特別部会「論点整理」（令和7年9月25日）
+      https://www.mext.go.jp/content/20260129-mxt_kyoiku01-000045057_01.pdf
+    </div>
+
+  </div>
+</body>
+</html>

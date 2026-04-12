@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>次期学習指導要領 論点整理｜第一章 図解【教職員向け】</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+      background: #f0f4f8;
+      color: #1a2035;
+      padding: 24px 16px;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .page-title h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #1a2035;
+      letter-spacing: 0.03em;
+    }
+    .page-title .subtitle {
+      font-size: 13px;
+      color: #6b7a99;
+      margin-top: 4px;
+    }
+    .page-title .badge {
+      display: inline-block;
+      background: #e53e3e;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── ブロック共通 ── */
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    /* ── Section 1: WHY ── */
+    .why-card { border-left: 5px solid #667eea; }
+    .why-card .card-label { background: #ebedff; color: #667eea; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .why-item {
+      background: #f7f8ff;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .why-item .icon { font-size: 26px; margin-bottom: 6px; }
+    .why-item .why-title { font-size: 13px; font-weight: 700; color: #3a4a7a; margin-bottom: 4px; }
+    .why-item .why-desc { font-size: 11.5px; color: #555; line-height: 1.5; }
+
+    /* ── Section 2: 3方向性 ── */
+    .directions-card { border-left: 5px solid #38b2ac; }
+    .directions-card .card-label { background: #e6fffa; color: #2c7a7b; }
+    .core-message {
+      background: linear-gradient(135deg, #667eea, #38b2ac);
+      color: white;
+      border-radius: 12px;
+      padding: 14px 18px;
+      text-align: center;
+      margin-bottom: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+    .core-message .small { font-size: 12px; font-weight: 400; opacity: 0.9; margin-top: 2px; }
+    .directions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .dir-item {
+      border-radius: 12px;
+      padding: 14px 12px;
+      position: relative;
+    }
+    .dir-excellence { background: #fff5f5; border: 2px solid #fc8181; }
+    .dir-equity { background: #fffff0; border: 2px solid #f6ad55; }
+    .dir-feasibility { background: #f0fff4; border: 2px solid #68d391; }
+    .dir-item .eng-tag {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    .excellence-tag { background: #fed7d7; color: #c53030; }
+    .equity-tag { background: #feebc8; color: #c05621; }
+    .feasibility-tag { background: #c6f6d5; color: #276749; }
+    .dir-item .dir-num {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .excellence-num { color: #e53e3e; }
+    .equity-num { color: #dd6b20; }
+    .feasibility-num { color: #276749; }
+    .dir-item .dir-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .dir-item ul {
+      list-style: none;
+      padding: 0;
+    }
+    .dir-item ul li {
+      font-size: 11.5px;
+      color: #444;
+      padding: 2px 0;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.4;
+    }
+    .dir-item ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      font-size: 10px;
+      top: 3px;
+    }
+
+    /* ── Section 3: 育てる人間像 ── */
+    .human-card { border-left: 5px solid #9f7aea; }
+    .human-card .card-label { background: #faf5ff; color: #6b46c1; }
+    .human-box {
+      background: linear-gradient(135deg, #faf5ff, #ebf8ff);
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: center;
+      border: 2px solid #d6bcfa;
+    }
+    .human-box .main-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: #44337a;
+      line-height: 1.7;
+    }
+    .human-box .sub-text {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 8px;
+    }
+    .human-pillars {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .pillar-item {
+      background: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid #e9d8fd;
+    }
+    .pillar-icon { font-size: 22px; flex-shrink: 0; }
+    .pillar-text { font-size: 12px; color: #3c366b; line-height: 1.5; }
+    .pillar-text strong { font-size: 13px; display: block; margin-bottom: 2px; }
+
+    /* ── Section 4: 教職員のやること ── */
+    .action-card { border-left: 5px solid #e53e3e; }
+    .action-card .card-label { background: #fff5f5; color: #c53030; }
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .action-table th {
+      background: #2d3748;
+      color: white;
+      padding: 9px 12px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .action-table th:first-child { border-radius: 8px 0 0 0; }
+    .action-table th:last-child { border-radius: 0 8px 0 0; }
+    .action-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .action-table tr:last-child td { border-bottom: none; }
+    .action-table tr:nth-child(even) td { background: #f7fafc; }
+    .action-table .who-cell {
+      font-weight: 700;
+      color: #2d3748;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+    .action-table .when-cell {
+      color: #e53e3e;
+      font-weight: 700;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+    .action-table .do-cell { color: #1a202c; }
+    .action-table .note-cell { color: #718096; font-size: 11.5px; }
+
+    /* ── 矢印 ── */
+    .arrow-row {
+      text-align: center;
+      font-size: 24px;
+      color: #a0aec0;
+      line-height: 1;
+      margin: -4px 0;
+    }
+
+    /* ── ひと言まとめ ── */
+    .summary-card {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      color: white;
+      border-radius: 14px;
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .summary-card .summary-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    .summary-card .summary-text {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+    .summary-card .summary-sub {
+      font-size: 12px;
+      opacity: 0.75;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    /* ── 出典 ── */
+    .source {
+      text-align: center;
+      font-size: 11px;
+      color: #a0aec0;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .why-grid, .directions-grid { grid-template-columns: 1fr; }
+      .human-pillars { grid-template-columns: 1fr; }
+      body { padding: 12px 10px; }
+      .card { padding: 16px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-title">
+    <h1>次期学習指導要領 論点整理｜第一章 図解</h1>
+    <div class="subtitle">中央教育審議会 教育課程企画特別部会（令和7年9月25日）</div>
+    <div class="badge">教職員向け</div>
+  </div>
+
+  <div class="container">
+
+    <!-- STEP 1: WHY -->
+    <div class="card why-card">
+      <span class="card-label">なぜ改訂するのか</span>
+      <h2>社会の急激な変化が、学校教育のアップデートを求めている</h2>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="icon">🤖</div>
+          <div class="why-title">生成AI・デジタル技術の台頭</div>
+          <div class="why-desc">「皆と同じができる」より<br>「独自の発想・視点」に価値が置かれる時代へ</div>
+        </div>
+        <div class="why-item">
+          <div class="icon">👨‍👩‍👧‍👦</div>
+          <div class="why-title">子どもの多様化</div>
+          <div class="why-desc">不登校・発達障害・外国籍・特異な才能のある子が教室に混在。均一な授業では対応困難</div>
+        </div>
+        <div class="why-item">
+          <div class="icon">⚠️</div>
+          <div class="why-title">現行の課題</div>
+          <div class="why-desc">「正解主義」「同調圧力」に偏り、自分で考え・判断する力が十分育っていない</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-row">↓</div>
+
+    <!-- STEP 2: 3方向性 -->
+    <div class="card directions-card">
+      <span class="card-label">改訂の3つの方向性（第一章の核心）</span>
+      <div class="core-message">
+        「多様な子供たちの『深い学び』を確かなものに」
+        <div class="small">〜あらゆる方策を活用し、三位一体で具現化〜</div>
+      </div>
+      <div class="directions-grid">
+
+        <div class="dir-item dir-excellence">
+          <span class="eng-tag excellence-tag">Excellence</span>
+          <div class="dir-num excellence-num">①</div>
+          <div class="dir-title">「主体的・対話的で<br>深い学び」の実装</div>
+          <ul>
+            <li>学習指導要領の構造化・表形式化・デジタル化</li>
+            <li>「中核的な概念の深い理解」を中心に据える</li>
+            <li>知識を「生きて働く確かなもの」として習得</li>
+            <li>情報活用能力の抜本的向上</li>
+          </ul>
+        </div>
+
+        <div class="dir-item dir-equity">
+          <span class="eng-tag equity-tag">Equity</span>
+          <div class="dir-num equity-num">②</div>
+          <div class="dir-title">多様性の包摂</div>
+          <ul>
+            <li>「調整授業時数制度」で教育課程を柔軟化</li>
+            <li>不登校・才能ある子へ特別の教育課程を新設</li>
+            <li>「裁量的な時間」で個に応じた学びを実現</li>
+            <li>一人一人の「好き」と「得意」を伸ばす</li>
+          </ul>
+        </div>
+
+        <div class="dir-item dir-feasibility">
+          <span class="eng-tag feasibility-tag">Feasibility</span>
+          <div class="dir-num feasibility-num">③</div>
+          <div class="dir-title">実現可能性の確保</div>
+          <ul>
+            <li>教師と子どもの双方に「余白」を創出</li>
+            <li>デジタル学習基盤の更なる充実</li>
+            <li>教科書・教材・指導書の改善</li>
+            <li>総合的な勤務環境整備（働き方改革と連動）</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="arrow-row">↓</div>
+
+    <!-- STEP 3: 育てる人間像 -->
+    <div class="card human-card">
+      <span class="card-label">育てたい子どもの姿</span>
+      <h2>「自らの人生を舵取りし、民主的な社会の創り手」になる</h2>
+      <div class="human-box">
+        <div class="main-text">
+          生涯にわたって主体的に学び続け、<br>
+          多様な他者と協働しながら、<br>
+          自らの人生を舵取りすることができる<br>
+          <strong style="color:#6b46c1;">民主的で持続可能な社会の創り手</strong>
+        </div>
+        <div class="sub-text">「みんな」で育む ── 教職員・子ども・保護者・地域・行政が一体となって</div>
+      </div>
+      <div class="human-pillars">
+        <div class="pillar-item">
+          <div class="pillar-icon">🌱</div>
+          <div class="pillar-text">
+            <strong>初発の思考・好奇心</strong>
+            まず考え、行動しようとする力。うまくいかなくても挑戦する意欲
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-icon">🔄</div>
+          <div class="pillar-text">
+            <strong>学びの主体的な調整</strong>
+            メタ認知で自分の学びを客観視し、修正・改善できる力
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-icon">🤝</div>
+          <div class="pillar-text">
+            <strong>他者との対話・協働</strong>
+            多様な他者と話し合い、対立を乗り越えて合意を形成する力
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-icon">🧭</div>
+          <div class="pillar-text">
+            <strong>学びを方向付ける人間性</strong>
+            よりよい社会・豊かな人生に向けて思考・行動を向ける意志
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow-row">↓</div>
+
+    <!-- STEP 4: 教職員のやること -->
+    <div class="card action-card">
+      <span class="card-label">✅ 教職員がやること</span>
+      <h2>第一章を読んだあなたが、今日・今学期・来年度に取り組むこと</h2>
+      <table class="action-table">
+        <thead>
+          <tr>
+            <th style="width:10%">誰が</th>
+            <th style="width:18%">いつ</th>
+            <th style="width:42%">何を</th>
+            <th style="width:30%">ポイント</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="who-cell">全教員</td>
+            <td class="when-cell">今日から</td>
+            <td class="do-cell">授業の中で「子どもが自分で考える場面」を意図的に設ける</td>
+            <td class="note-cell">「正解を教える」→「問いを投げかける」へ。小さな一歩でOK</td>
+          </tr>
+          <tr>
+            <td class="who-cell">学級担任</td>
+            <td class="when-cell">今学期中</td>
+            <td class="do-cell">クラスの子どもの「好き」と「得意」を把握し、記録する</td>
+            <td class="note-cell">②多様性の包摂の基本。学習記録・面談・観察でOK</td>
+          </tr>
+          <tr>
+            <td class="who-cell">全教員</td>
+            <td class="when-cell">今学期中</td>
+            <td class="do-cell">「深い学び」につながっているか、自分の授業を1単元振り返る</td>
+            <td class="note-cell">「知識の暗記」で終わっていないか？「概念として理解」できているか？</td>
+          </tr>
+          <tr>
+            <td class="who-cell">管理職・<br>教務主任</td>
+            <td class="when-cell">来年度の<br>計画段階</td>
+            <td class="do-cell">「調整授業時数制度」を見据え、週あたりコマ数の見直しを検討する</td>
+            <td class="note-cell">③実現可能性の確保。週29コマ→28コマへの平準化が先行事例で可能</td>
+          </tr>
+          <tr>
+            <td class="who-cell">全教員</td>
+            <td class="when-cell">研修で</td>
+            <td class="do-cell">本「論点整理」第一章を同僚と読み合わせ、学校の課題と照らし合わせる</td>
+            <td class="note-cell">令和8年度中に答申→次期学習指導要領へ。今から準備が大切</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ひと言まとめ -->
+    <div class="summary-card">
+      <div class="summary-label">🎯 ひと言まとめ</div>
+      <div class="summary-text">
+        「深く学ぶ・多様を包む・無理なく続ける」の三位一体が、次期学習指導要領の土台。<br>
+        教職員一人一人が今の授業・学校運営を見直す出発点にする。
+      </div>
+      <div class="summary-sub">
+        ▶ 完全な改訂は令和8年度（答申）→ 全面実施はその後だが、<strong>「調整授業時数」「特別の教育課程」など現在でも先行できる施策が多数ある</strong>
+      </div>
+    </div>
+
+    <div class="source">
+      出典：中央教育審議会 初等中等教育分科会 教育課程部会 教育課程企画特別部会「論点整理」（令和7年9月25日）｜図解作成：2026年4月
+    </div>
+
+  </div>
+
+</body>
+</html>
