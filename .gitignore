@@ -1,3 +1,6 @@
+# ビルド生成（GitHub Pages は docs/index.html を使用）
+習慣ダッシュボード_AIドリブンスクール報告_埋め込み.html
+
 # PDFファイル（容量が大きいため除外）
 *.pdf
 

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自作ツール報告 — 習慣ダッシュボード（図解）</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Meiryo', 'Yu Gothic', sans-serif;
+      background: linear-gradient(180deg, #f0f4fc 0%, #e8eef8 40%, #f5f7fa 100%);
+      color: #263238;
+      padding: 32px 18px 56px;
+      line-height: 1.65;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 22px;
+      color: #1a237e;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+    .lead {
+      font-size: 13px;
+      color: #455a64;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 15px;
+      color: #6a1b9a;
+      margin: 32px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #c5cae9;
+    }
+    figure {
+      margin: 0 0 22px;
+      background: #fff;
+      border: 1px solid #cfd8dc;
+      border-radius: 12px;
+      padding: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(38, 50, 56, 0.06);
+    }
+    figcaption {
+      font-size: 12px;
+      color: #546e7a;
+      margin-top: 10px;
+    }
+    figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    /* ===== 工夫フロー図 ===== */
+    .craft-wrap {
+      background: #fff;
+      border: 1px solid #b0bec5;
+      border-radius: 14px;
+      padding: 20px 16px 24px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 12px rgba(38, 50, 56, 0.06);
+    }
+    .craft-title {
+      font-size: 13px;
+      color: #e65100;
+      font-weight: bold;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .craft-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .craft-box {
+      background: #e8eaf6;
+      border: 1px solid #7986cb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #283593;
+      max-width: 200px;
+      min-width: 140px;
+      text-align: center;
+      flex: 1 1 140px;
+    }
+    .craft-box strong { display: block; color: #3949ab; font-size: 11px; margin-bottom: 6px; }
+    .craft-arrow-down {
+      text-align: center;
+      color: #78909c;
+      font-size: 18px;
+      margin: 4px 0 8px;
+    }
+    .craft-split {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: start;
+      margin-top: 8px;
+    }
+    @media (max-width: 720px) {
+      .craft-split { grid-template-columns: 1fr; }
+      .craft-mid { display: none; }
+    }
+    .craft-panel {
+      background: #ffebee;
+      border: 1px solid #e57373;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 12px;
+    }
+    .craft-panel h4 {
+      color: #b71c1c;
+      font-size: 12px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .craft-panel ul {
+      padding-left: 1.1em;
+      color: #5d4037;
+    }
+    .craft-panel li { margin: 4px 0; }
+    .craft-mid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #90a4ae;
+      padding: 8px 0;
+    }
+    .craft-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .act {
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 12px;
+      flex: 1 1 200px;
+      max-width: 280px;
+    }
+    .act-cal {
+      background: #e8f5e9;
+      border: 1px solid #43a047;
+      color: #1b5e20;
+    }
+    .act-cal strong { color: #2e7d32; display: block; margin-bottom: 6px; font-size: 12px; }
+    .act-ai {
+      background: #fff3e0;
+      border: 1px solid #fb8c00;
+      color: #e65100;
+    }
+    .act-ai strong { color: #ef6c00; display: block; margin-bottom: 6px; font-size: 12px; }
+
+    /* ===== 4パーツ縦フロー ===== */
+    .pipe {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .pipe-step {
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 0;
+      position: relative;
+    }
+    .pipe-step .num {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 16px;
+      margin-bottom: 8px;
+    }
+    .pipe-step .ttl { font-size: 15px; font-weight: bold; margin-bottom: 8px; }
+    .pipe-step .desc { font-size: 13px; color: #37474f; line-height: 1.7; }
+    .p1 { background: linear-gradient(135deg, #e8eaf6, #c5cae9); border: 1.5px solid #5c6bc0; }
+    .p1 .num { background: #3949ab; color: #fff; }
+    .p1 .ttl { color: #1a237e; }
+    .p2 { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border: 1.5px solid #66bb6a; }
+    .p2 .num { background: #388e3c; color: #fff; }
+    .p2 .ttl { color: #1b5e20; }
+    .p3 { background: linear-gradient(135deg, #fff3e0, #ffe0b2); border: 1.5px solid #ff9800; }
+    .p3 .num { background: #e65100; color: #fff; }
+    .p3 .ttl { color: #bf360c; }
+    .p4 { background: linear-gradient(135deg, #f3e5f5, #e1bee7); border: 1.5px solid #ab47bc; }
+    .p4 .num { background: #7b1fa2; color: #fff; }
+    .p4 .ttl { color: #4a148c; }
+    .pipe-arr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 22px;
+      justify-content: center;
+      color: #78909c;
+      font-size: 16px;
+    }
+
+    /* ===== 課題カード ===== */
+    .issue-card {
+      background: #eceff1;
+      border: 1px solid #b0bec5;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-top: 8px;
+    }
+    .issue-card h3 {
+      font-size: 13px;
+      color: #455a64;
+      margin-bottom: 10px;
+    }
+    .issue-card .issue-lead {
+      font-size: 13px;
+      color: #37474f;
+    }
+    .issue-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #546e7a;
+      margin-top: 10px;
+    }
+    .issue-pill {
+      background: #ffcdd2;
+      border: 1px solid #e57373;
+      color: #b71c1c;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    .issue-pill.ok {
+      background: #c8e6c9;
+      border-color: #66bb6a;
+      color: #1b5e20;
+    }
+    .arrow-txt { color: #78909c; }
+
+    .text-block {
+      background: #fff;
+      border: 1px solid #cfd8dc;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #37474f;
+      margin-top: 10px;
+      box-shadow: 0 1px 4px rgba(38, 50, 56, 0.05);
+    }
+    .note {
+      font-size: 12px;
+      color: #607d8b;
+      margin-top: 28px;
+      text-align: center;
+    }
+    a { color: #1565c0; }
+    code {
+      background: #eceff1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #37474f;
+    }
+  </style>
+</head>
+<body>
+  <h1>自作ツール報告：習慣ダッシュボード</h1>
+  <p class="lead">日次レビューをスプレッドシートに蓄積し、期間を選んで達成率を可視化。要改善だけを絞り込み、重点習慣を選ぶとカレンダー登録とGeminiのヒントまでつなげています。</p>
+
+  <h2>画面キャプチャ</h2>
+  <figure>
+    <img src="report_assets/habit-dashboard-overview.png" alt="期間指定とサマリー、カテゴリ別の達成率">
+    <figcaption>図1：期間を選ぶと、その間の達成率が一覧表示される画面</figcaption>
+  </figure>
+  <figure>
+    <img src="report_assets/habit-dashboard-detail.png" alt="要改善リスト、重点選択、Geminiボタン">
+    <figcaption>図2：達成率が低い習慣に絞った表示、重点習慣の選択、Geminiへの相談</figcaption>
+  </figure>
+
+  <h2>工夫したポイント（使い方の流れ）</h2>
+  <div class="craft-wrap">
+    <div class="craft-title">チェックした日次データから、期間集計 → 要改善に絞る → 1週間の行動とAIヒントへ</div>
+    <div class="craft-row">
+      <div class="craft-box"><strong>入力</strong>習慣化したいことを毎日チェック（スプレッドシート）</div>
+      <div class="craft-box"><strong>期間</strong>表示したい期間を選ぶと、その間の達成率が出る</div>
+      <div class="craft-box"><strong>一覧</strong>カテゴリ別・頻度別に達成状況を俯瞰</div>
+    </div>
+    <div class="craft-arrow-down">▼</div>
+    <div class="craft-split">
+      <div class="craft-panel">
+        <h4>下段の「要改善」エリア</h4>
+        <ul>
+          <li>達成率が低い習慣だけを表示</li>
+          <li>達成率が7割以上の習慣はリストから外す（見るべきところに集中）</li>
+        </ul>
+      </div>
+      <div class="craft-mid">→</div>
+      <div class="craft-panel">
+        <h4>クリックで「次の1週間の重点」に</h4>
+        <ul>
+          <li>選んだ習慣を、次の1週間は特に取り組む対象として決める</li>
+        </ul>
+      </div>
+    </div>
+    <div class="craft-actions">
+      <div class="act act-cal">
+        <strong>Googleカレンダー連携</strong>
+        選んだ習慣を、終日タスクとして1週間分まとめて自動でカレンダーに入れる（予定として可視化）
+      </div>
+      <div class="act act-ai">
+        <strong>Gemini（ジェミニ）</strong>
+        「アドバイスを聞く」から、継続のためのヒントをもらえるようにした
+      </div>
+    </div>
+  </div>
+  <p class="text-block">まとめると、毎日の記録を「期間で集計」し、ダッシュボードで数字化したうえで、改善が必要な項目に視線を誘導し、重点1週間をカレンダーに落とし、必要なら生成AIに相談できる一連の動線をつなげたところが工夫の中心です。</p>
+
+  <h2>全体を支える4つのパーツ</h2>
+  <div class="pipe">
+    <div class="pipe-step p1">
+      <span class="num">① トリガー</span>
+      <div class="ttl">週末・日曜日の午前10時に動く</div>
+      <p class="desc">決まった時刻に処理が走り、最新のレビュー内容を反映する起点になっています。</p>
+    </div>
+    <div class="pipe-arr">▼</div>
+    <div class="pipe-step p2">
+      <span class="num">② ソース（元データ）</span>
+      <div class="ttl">スプレッドシート</div>
+      <p class="desc">日々のチェック結果がクラウド上の表に蓄積され、ここが唯一のデータの置き場です。</p>
+    </div>
+    <div class="pipe-arr">▼</div>
+    <div class="pipe-step p3">
+      <span class="num">③ 処理する場所</span>
+      <div class="ttl">Google Apps Script（GAS）</div>
+      <p class="desc">集計・連携などのロジックはGAS側で実行し、表のデータをダッシュボード用に整えます。</p>
+    </div>
+    <div class="pipe-arr">▼</div>
+    <div class="pipe-step p4">
+      <span class="num">④ 届ける場所</span>
+      <div class="ttl">このパソコン（ダッシュボード画面）</div>
+      <p class="desc">ブラウザで見る自作ダッシュボードに結果を表示し、要改善の選択やカレンダー反映・Gemini呼び出しもここから行います。</p>
+    </div>
+  </div>
+
+  <h2>デザインの工夫（画面から伝えること）</h2>
+  <p class="text-block">ツール本体の画面では暗めの背景にし、達成率の円グラフとカテゴリ色で「どこが弱いか」を素早く掴めるようにしています。要改善リストは注意喚起の色で目立たせ、重点を選ぶ操作は色が変わるようにし、Geminiへの導線はボタンで一目で分かるようにしました（この報告ページは印刷・共有しやすい明るい配色です）。</p>
+
+  <h2>ぶつかった課題と解決</h2>
+  <div class="issue-card">
+    <h3>課題：Geminiにアドバイスを聞く部分（GoogleのAPI連携）</h3>
+    <p class="issue-lead">APIの渡し方や設定の組み合わせで、何度もエラーが出てうまくつながりませんでした。</p>
+    <div class="issue-flow">
+      <span class="issue-pill">エラー内容をコピー</span>
+      <span class="arrow-txt">→</span>
+      <span class="issue-pill">Cursorにその都度送る</span>
+      <span class="arrow-txt">→</span>
+      <span class="issue-pill">原因の分析・修正案</span>
+      <span class="arrow-txt">→</span>
+      <span class="issue-pill ok">一つずつ解消して接続成功</span>
+    </div>
+    <p class="text-block" style="margin-top:14px;">生成AIの支援でエラーログを読み解きながら、試行を細かく刻んでいくやり方が、APIまわりの突破に効きました。</p>
+  </div>
+
+  <p class="note">処理の全体フロー（列構成や関数名レベル）は <a href="習慣ダッシュボード_仕組み図解.html">習慣ダッシュボード_仕組み図解.html</a> も参照してください。このページと <code>report_assets</code> を同じフォルダ構成のまま公開すると、画像付きでURL提出できます。</p>
+</body>
+</html>
