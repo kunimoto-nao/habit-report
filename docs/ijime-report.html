@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>卒業制作｜定例教育委員会のいじめ報告を自動作成</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif;
+      background: #f0f3f8;
+      color: #1a202c;
+      padding: 24px 14px 48px;
+    }
+
+    .hdr {
+      max-width: 860px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    .hdr-tag {
+      display: inline-block;
+      background: #2d3748;
+      color: #e2e8f0;
+      font-size: 11px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .hdr h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #1a202c;
+      line-height: 1.4;
+    }
+    .hdr .hdr-sub {
+      font-size: 12.5px;
+      color: #718096;
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px 22px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .sec-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 3px 11px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #2d3748;
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .arr { text-align: center; font-size: 22px; color: #cbd5e0; margin: -4px 0; }
+
+    /* ===== ① 作ったもの ===== */
+    .card-made { border-left: 5px solid #3182ce; }
+    .lbl-made { background: #ebf8ff; color: #2b6cb0; }
+
+    .io-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 8px;
+      align-items: stretch;
+      margin-bottom: 16px;
+    }
+    .io-box {
+      border-radius: 12px;
+      padding: 12px 12px 14px;
+      text-align: center;
+    }
+    .io-in { background: #ebf8ff; border: 1.5px solid #90cdf4; }
+    .io-mid { background: #faf5ff; border: 1.5px solid #d6bcfa; }
+    .io-out { background: #f0fff4; border: 1.5px solid #9ae6b4; }
+    .io-k {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .io-in .io-k { color: #2b6cb0; }
+    .io-mid .io-k { color: #6b46c1; }
+    .io-out .io-k { color: #276749; }
+    .io-t { font-size: 13px; font-weight: 800; color: #1a202c; line-height: 1.4; }
+    .io-d { font-size: 11px; color: #4a5568; margin-top: 4px; line-height: 1.5; }
+    .io-arr {
+      display: flex;
+      align-items: center;
+      color: #a0aec0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .mock-note {
+      font-size: 11px;
+      color: #718096;
+      margin-bottom: 10px;
+    }
+    .mock-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .mock {
+      border-radius: 10px;
+      border: 1.5px solid #e2e8f0;
+      overflow: hidden;
+      background: #f7fafc;
+    }
+    .mock-bar {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 6px 10px;
+      color: #fff;
+    }
+    .mb-in { background: #2b6cb0; }
+    .mb-tbl { background: #276749; }
+    .mb-ms { background: #6b46c1; }
+    .mock-body { padding: 10px; font-size: 11px; color: #2d3748; line-height: 1.5; }
+    .sheet-line {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      gap: 4px;
+      margin-bottom: 3px;
+    }
+    .sheet-line span {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      padding: 3px 6px;
+      font-size: 10.5px;
+    }
+    .sheet-line.head span {
+      background: #edf2f7;
+      font-weight: 800;
+      color: #4a5568;
+    }
+    .ms-line {
+      background: #fff;
+      border-left: 3px solid #9f7aea;
+      padding: 6px 8px;
+      margin-bottom: 5px;
+      font-size: 11px;
+      color: #4a5568;
+    }
+
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tech-pill {
+      background: #edf2f7;
+      color: #2d3748;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    /* ===== ② 面倒 ===== */
+    .card-issue { border-left: 5px solid #e53e3e; }
+    .lbl-issue { background: #fff5f5; color: #c53030; }
+
+    .scene {
+      background: #fff5f5;
+      border: 1.5px solid #fed7d7;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .scene-hd {
+      font-size: 12px;
+      font-weight: 800;
+      color: #c53030;
+      margin-bottom: 6px;
+    }
+    .scene p {
+      font-size: 13px;
+      color: #2d3748;
+      line-height: 1.7;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .ba {
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .ba-ng { background: #fff5f5; border: 1.5px solid #fc8181; }
+    .ba-ok { background: #f0fff4; border: 1.5px solid #68d391; }
+    .ba h3 {
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .ba-ng h3 { color: #c53030; }
+    .ba-ok h3 { color: #276749; }
+    .ba ul { list-style: none; }
+    .ba li {
+      font-size: 12px;
+      color: #2d3748;
+      padding: 3px 0 3px 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .ba li::before {
+      position: absolute;
+      left: 0;
+      font-size: 10px;
+    }
+    .ba-ng li::before { content: '×'; color: #e53e3e; }
+    .ba-ok li::before { content: '○'; color: #38a169; }
+    .ba-mid {
+      display: flex;
+      align-items: center;
+      color: #a0aec0;
+      font-size: 22px;
+    }
+
+    /* ===== ③ 理由 ===== */
+    .card-why { border-left: 5px solid #667eea; }
+    .lbl-why { background: #ebedff; color: #434190; }
+    .why-core {
+      background: linear-gradient(120deg, #434190, #5a67d8);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .why-core span {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.88;
+      margin-top: 6px;
+    }
+
+    /* ===== ④ 工夫と苦戦 ===== */
+    .card-craft { border-left: 5px solid #dd6b20; }
+    .lbl-craft { background: #fffaf0; color: #c05621; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .panel {
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .panel-good { background: #fffbeb; border: 1.5px solid #f6ad55; }
+    .panel-hard { background: #fff5f5; border: 1.5px solid #fc8181; }
+    .panel h3 {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .panel-good h3 { color: #c05621; }
+    .panel-hard h3 { color: #c53030; }
+    .panel p {
+      font-size: 12.5px;
+      color: #2d3748;
+      line-height: 1.65;
+    }
+    .insight {
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #4a5568;
+    }
+    .insight strong { color: #1a202c; }
+
+    .fix-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+    .fix-pill {
+      background: #fed7d7;
+      border: 1px solid #fc8181;
+      color: #9b2c2c;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+    .fix-pill.ok {
+      background: #c6f6d5;
+      border-color: #68d391;
+      color: #22543d;
+    }
+    .fix-arr { color: #a0aec0; }
+
+    /* ===== ACTION ===== */
+    .card-action { border-left: 5px solid #e53e3e; }
+    .lbl-action { background: #fff5f5; color: #c53030; }
+    .ac {
+      background: #fff5f5;
+      border: 1.5px solid #fed7d7;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .ac-icon { font-size: 22px; }
+    .ac-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1a202c;
+      margin-bottom: 4px;
+    }
+    .ac-desc {
+      font-size: 12.5px;
+      color: #4a5568;
+      line-height: 1.65;
+    }
+
+    .card-sum {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      color: white;
+      border-radius: 14px;
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .sum-lbl { font-size: 11px; opacity: 0.65; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .sum-text { font-size: 15px; font-weight: 800; line-height: 1.75; }
+    .sum-sub { font-size: 12px; opacity: 0.78; margin-top: 10px; line-height: 1.65; }
+
+    .foot {
+      text-align: center;
+      font-size: 11px;
+      color: #a0aec0;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 700px) {
+      .io-row, .mock-grid, .before-after, .split { grid-template-columns: 1fr; }
+      .io-arr, .ba-mid { display: none; }
+      .card { padding: 14px 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="hdr-tag">卒業制作｜自作ツール報告（AIを学ぶ仲間向け）</div>
+    <h1>定例教育委員会のいじめ報告を、<br>集計表と読み原稿まで自動作成する</h1>
+    <div class="hdr-sub">自分の仕事そのものを題材にした。Excel／スプレッドシートを入れると、定例用の表と読み上げ原稿が出る。</div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ① -->
+    <div class="card card-made">
+      <span class="sec-label lbl-made">① 作ったもの</span>
+      <h2>学校からの表データを入れると、定例用の集計表と読み原稿がセットで出る</h2>
+
+      <div class="io-row">
+        <div class="io-box io-in">
+          <div class="io-k">入れるもの</div>
+          <div class="io-t">Excel／スプレッドシート</div>
+          <div class="io-d">学校ごとのいじめ報告データ</div>
+        </div>
+        <div class="io-arr">→</div>
+        <div class="io-box io-mid">
+          <div class="io-k">動かすもの</div>
+          <div class="io-t">GAS ＋ 生成AI</div>
+          <div class="io-d">GAS＝表を自動で動かす仕組み</div>
+        </div>
+        <div class="io-arr">→</div>
+        <div class="io-box io-out">
+          <div class="io-k">出るもの</div>
+          <div class="io-t">集計表 ＋ 読み原稿</div>
+          <div class="io-d">定例教育委員会で使う体裁</div>
+        </div>
+      </div>
+
+      <p class="mock-note">画面イメージ（概要）。実機のスクリーンショットは後から差し込めます。</p>
+      <div class="mock-grid">
+        <div class="mock">
+          <div class="mock-bar mb-in">入力｜報告データ</div>
+          <div class="mock-body">
+            <div class="sheet-line head"><span>学校</span><span>件数</span><span>備考</span></div>
+            <div class="sheet-line"><span>A小</span><span>○</span><span>…</span></div>
+            <div class="sheet-line"><span>B中</span><span>○</span><span>…</span></div>
+            <div class="sheet-line"><span>C小</span><span>○</span><span>…</span></div>
+          </div>
+        </div>
+        <div class="mock">
+          <div class="mock-bar mb-tbl">出力｜集計表</div>
+          <div class="mock-body">
+            <div class="sheet-line head"><span>区分</span><span>件数</span><span>構成</span></div>
+            <div class="sheet-line"><span>小学校</span><span>○</span><span>…</span></div>
+            <div class="sheet-line"><span>中学校</span><span>○</span><span>…</span></div>
+            <div class="sheet-line"><span>市全体</span><span>○</span><span>合計</span></div>
+          </div>
+        </div>
+        <div class="mock">
+          <div class="mock-bar mb-ms">出力｜読み原稿</div>
+          <div class="mock-body">
+            <div class="ms-line">本日のいじめの状況について、ご報告します。</div>
+            <div class="ms-line">集計表の数字に沿って、委員の前で読める文章が出る。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-row">
+        <span class="tech-pill">スプレッドシート</span>
+        <span class="tech-pill">GAS（Google Apps Script）</span>
+        <span class="tech-pill">生成AI</span>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ② -->
+    <div class="card card-issue">
+      <span class="sec-label lbl-issue">② 解決する面倒・課題</span>
+      <h2>定例の直前に、全校分を手で集計し、表と原稿をゼロから作っていた</h2>
+
+      <div class="scene">
+        <div class="scene-hd">いちばんつらかった場面</div>
+        <p>定例教育委員会の直前。各学校から上がってきた件数を手で足し、前回と同じ体裁の集計表を作り、その数字を委員の前で読む原稿に書き直す。表と原稿を、毎回ゼロから作っていた。</p>
+      </div>
+
+      <div class="before-after">
+        <div class="ba ba-ng">
+          <h3>ツールの前</h3>
+          <ul>
+            <li>全校分を手集計する</li>
+            <li>集計表をゼロから組む</li>
+            <li>読み原稿もゼロから書く</li>
+            <li>作業が定例直前に集中する</li>
+          </ul>
+        </div>
+        <div class="ba-mid">→</div>
+        <div class="ba ba-ok">
+          <h3>ツールの後</h3>
+          <ul>
+            <li>表データを入れる</li>
+            <li>前回と同じ体裁の表が出る</li>
+            <li>その数字から読み原稿も出る</li>
+            <li>直前のゼロ作成がなくなる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ③ -->
+    <div class="card card-why">
+      <span class="sec-label lbl-why">③ 作りたいと思った理由</span>
+      <h2>お題を探す必要がなかった。自分の仕事そのものだった</h2>
+      <div class="why-core">
+        定例のたびに、自分がその作業をしていた。
+        <span>「毎月必ず発生する、自分の面倒」を卒業制作の題材にした。</span>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ④ -->
+    <div class="card card-craft">
+      <span class="sec-label lbl-craft">④ 工夫したポイントと苦戦したポイント</span>
+      <h2>表の体裁を固定して一気に出す。合わない合計は、読み込みを直して合わせた</h2>
+
+      <div class="split">
+        <div class="panel panel-good">
+          <h3>工夫｜前回と同じ体裁で、表と原稿を一気に出す</h3>
+          <p>集計表は、前回の定例と同じ体裁になるように自動作成する。その数字から、読み原稿までセットで出す。手作業の核心だった「ゼロから作る」を、入口の表データに置き換えた。</p>
+        </div>
+        <div class="panel panel-hard">
+          <h3>苦戦｜学校の件数を足しても、市全体と一致しない</h3>
+          <p>学校ごとの件数を足しても、市全体の合計と合わなかった。定例資料は、合計が1件でも違うと使えない。原因は「足し算の考え方」より先に、<strong>データを正しく読み込めていない</strong>側にあった。</p>
+          <div class="insight"><strong>気づき：</strong>AIと何度もやり取りし、正しく読み込むようツールの修正を重ねて、合計が合うようにした。</div>
+        </div>
+      </div>
+
+      <div class="fix-flow">
+        <span class="fix-pill">学校計 ≠ 市計</span>
+        <span class="fix-arr">→</span>
+        <span class="fix-pill">AIに状況を渡す</span>
+        <span class="fix-arr">→</span>
+        <span class="fix-pill">読み込みを修正</span>
+        <span class="fix-arr">→</span>
+        <span class="fix-pill ok">合計が一致する</span>
+      </div>
+    </div>
+
+    <div class="arr">↓ 受けて、仲間がやること</div>
+
+    <!-- ACTION -->
+    <div class="card card-action">
+      <span class="sec-label lbl-action">✅ 仲間がやること</span>
+      <h2>自分の「毎月必ず発生する面倒」を、1本の自動化の題材にする</h2>
+      <div class="ac">
+        <div class="ac-icon">🎯</div>
+        <div>
+          <div class="ac-title">お題は、新しいアイデアより、今の仕事の繰り返し作業から取る</div>
+          <div class="ac-desc">この制作の起点は「AIで何か作る」ではなく、「定例の直前に、自分が毎回やっている作業」だった。入口を表データに固定し、出口を「前回と同じ体裁の成果物」にすると、現場で使えるものになる。合わない数字は、生成AIに丸投げせず、読み込みを一つずつ直す。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-sum">
+      <div class="sum-lbl">🎯 ひと言まとめ</div>
+      <div class="sum-text">
+        定例直前の手集計をやめ、表データから<br>
+        「前回と同じ体裁の集計表＋読み原稿」まで一気に出す。
+      </div>
+      <div class="sum-sub">
+        技術はスプレッドシート ＋ GAS ＋ 生成AI。<br>
+        苦戦は学校計と市計が合わないこと。AIと修正を重ねて、正しく読み込むようにした。
+      </div>
+    </div>
+
+    <div class="foot">
+      卒業制作の自作ツール報告。画面は概要イメージ。実機キャプチャがあれば差し替え可能。
+    </div>
+
+  </div>
+</body>
+</html>
