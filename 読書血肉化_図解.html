@@ -1,0 +1,701 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>読書血肉化｜自作ツール報告（図解）</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif;
+      background: #f0f3f8;
+      color: #1a202c;
+      padding: 24px 14px 48px;
+    }
+
+    .hdr {
+      max-width: 900px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    .hdr-tag {
+      display: inline-block;
+      background: #2d3748;
+      color: #e2e8f0;
+      font-size: 11px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .hdr h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #1a202c;
+      line-height: 1.4;
+    }
+    .hdr .hdr-sub {
+      font-size: 13px;
+      color: #4a5568;
+      margin-top: 8px;
+      line-height: 1.7;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hdr .app-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #2b6cb0;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px solid #90cdf4;
+    }
+    .hdr .app-link:hover { color: #1a365d; }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px 22px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .sec-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 3px 11px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #2d3748;
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .arr {
+      text-align: center;
+      font-size: 14px;
+      color: #a0aec0;
+      margin: -2px 0;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===== なるほど帯 ===== */
+    .naruhodo {
+      background: linear-gradient(120deg, #1a365d, #2b6cb0);
+      color: #fff;
+      border-radius: 14px;
+      padding: 16px 22px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(26,54,93,0.25);
+    }
+    .naruhodo .n-lbl {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      opacity: 0.75;
+      margin-bottom: 6px;
+    }
+    .naruhodo .n-text {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+    .naruhodo .n-text em {
+      font-style: normal;
+      background: rgba(255,255,255,0.18);
+      padding: 1px 8px;
+      border-radius: 6px;
+    }
+
+    /* ===== ① 画面 ===== */
+    .card-screen { border-left: 5px solid #3182ce; }
+    .lbl-screen { background: #ebf8ff; color: #2b6cb0; }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .flow-step {
+      background: #ebf8ff;
+      border: 1.5px solid #90cdf4;
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .flow-step.ai {
+      background: #fffaf0;
+      border-color: #f6ad55;
+    }
+    .flow-step.todo {
+      background: #f0fff4;
+      border-color: #9ae6b4;
+    }
+    .flow-step.rev {
+      background: #edf2f7;
+      border-color: #a0aec0;
+    }
+    .flow-n {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .flow-step:not(.ai):not(.todo):not(.rev) .flow-n { color: #2b6cb0; }
+    .flow-step.ai .flow-n { color: #c05621; }
+    .flow-step.todo .flow-n { color: #276749; }
+    .flow-step.rev .flow-n { color: #4a5568; }
+    .flow-t {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1a202c;
+      line-height: 1.35;
+    }
+    .flow-d {
+      font-size: 10.5px;
+      color: #4a5568;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .shot-wrap {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f7fafc;
+      margin-bottom: 12px;
+    }
+    .shot-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .shot-cap {
+      font-size: 11px;
+      color: #718096;
+      padding: 8px 12px;
+      border-top: 1px solid #e2e8f0;
+      line-height: 1.5;
+    }
+
+    .pane-note {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .pane {
+      border-radius: 10px;
+      padding: 10px 11px;
+      border: 1.5px solid #e2e8f0;
+      background: #f7fafc;
+    }
+    .pane-k {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .pane:nth-child(1) .pane-k { color: #2b6cb0; }
+    .pane:nth-child(2) .pane-k { color: #276749; }
+    .pane:nth-child(3) .pane-k { color: #c05621; }
+    .pane:nth-child(4) .pane-k { color: #2c7a7b; }
+    .pane-t { font-size: 12.5px; font-weight: 800; color: #1a202c; margin-bottom: 3px; }
+    .pane-d { font-size: 11px; color: #4a5568; line-height: 1.45; }
+
+    /* ===== ② データ ===== */
+    .card-data { border-left: 5px solid #38a169; }
+    .lbl-data { background: #f0fff4; color: #276749; }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .data-item {
+      background: #f0fff4;
+      border: 1.5px solid #9ae6b4;
+      border-radius: 10px;
+      padding: 11px 13px;
+    }
+    .data-item.link {
+      background: #ebf8ff;
+      border-color: #90cdf4;
+    }
+    .data-item.cal {
+      background: #fffaf0;
+      border-color: #f6ad55;
+    }
+    .data-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1a202c;
+      margin-bottom: 4px;
+    }
+    .data-ex {
+      font-size: 11.5px;
+      color: #4a5568;
+      line-height: 1.55;
+    }
+
+    .sheet-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tab {
+      background: #edf2f7;
+      color: #2d3748;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 6px;
+    }
+
+    /* ===== ③ 保存先 ===== */
+    .card-store { border-left: 5px solid #667eea; }
+    .lbl-store { background: #ebedff; color: #434190; }
+
+    .why-core {
+      background: linear-gradient(120deg, #434190, #5a67d8);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.55;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .why-core span {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.9;
+      margin-top: 6px;
+    }
+
+    .store-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .store-box {
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .store-where {
+      background: #ebedff;
+      border: 1.5px solid #a3bffa;
+    }
+    .store-effect {
+      background: #f0fff4;
+      border: 1.5px solid #9ae6b4;
+    }
+    .store-k {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .store-where .store-k { color: #434190; }
+    .store-effect .store-k { color: #276749; }
+    .store-t { font-size: 13px; font-weight: 800; color: #1a202c; line-height: 1.45; }
+    .store-d { font-size: 11.5px; color: #4a5568; margin-top: 4px; line-height: 1.5; }
+    .store-mid {
+      display: flex;
+      align-items: center;
+      color: #a0aec0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    /* ===== ④ 工夫と苦戦 ===== */
+    .card-craft { border-left: 5px solid #dd6b20; }
+    .lbl-craft { background: #fffaf0; color: #c05621; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .panel {
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .panel-good { background: #fffbeb; border: 1.5px solid #f6ad55; }
+    .panel-hard { background: #fff5f5; border: 1.5px solid #fc8181; }
+    .panel h3 {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .panel-good h3 { color: #c05621; }
+    .panel-hard h3 { color: #c53030; }
+    .panel ol, .panel ul {
+      padding-left: 1.15em;
+      margin: 0;
+    }
+    .panel li {
+      font-size: 12.5px;
+      color: #2d3748;
+      line-height: 1.65;
+      margin: 5px 0;
+    }
+    .panel li strong { color: #1a202c; }
+
+    .ai-callout {
+      margin-top: 12px;
+      background: #fffaf0;
+      border: 1.5px solid #f6ad55;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .ai-callout .ai-k {
+      font-size: 11px;
+      font-weight: 800;
+      color: #c05621;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .ai-callout p {
+      font-size: 12.5px;
+      color: #2d3748;
+      line-height: 1.65;
+    }
+    .ai-bridge {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    .ai-pill {
+      background: #fed7d7;
+      border: 1px solid #fc8181;
+      color: #9b2c2c;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+    .ai-pill.mid {
+      background: #feebc8;
+      border-color: #f6ad55;
+      color: #9c4221;
+    }
+    .ai-pill.ok {
+      background: #c6f6d5;
+      border-color: #68d391;
+      color: #22543d;
+    }
+    .ai-arr { color: #a0aec0; }
+
+    /* ===== ACTION ===== */
+    .card-action { border-left: 5px solid #e53e3e; }
+    .lbl-action { background: #fff5f5; color: #c53030; }
+    .ac {
+      background: #fff5f5;
+      border: 1.5px solid #fed7d7;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .ac-icon { font-size: 22px; }
+    .ac-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1a202c;
+      margin-bottom: 4px;
+    }
+    .ac-desc {
+      font-size: 12.5px;
+      color: #4a5568;
+      line-height: 1.65;
+    }
+
+    .card-sum {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      color: white;
+      border-radius: 14px;
+      padding: 18px 24px;
+      text-align: center;
+    }
+    .sum-lbl { font-size: 11px; opacity: 0.65; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .sum-text { font-size: 15px; font-weight: 800; line-height: 1.75; }
+    .sum-sub { font-size: 12px; opacity: 0.78; margin-top: 10px; line-height: 1.65; }
+
+    .foot {
+      text-align: center;
+      font-size: 11px;
+      color: #a0aec0;
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+    .foot a { color: #718096; }
+
+    @media (max-width: 720px) {
+      .flow-row, .pane-note, .data-grid, .store-row, .split {
+        grid-template-columns: 1fr;
+      }
+      .store-mid { display: none; }
+      .card { padding: 14px 13px; }
+      .hdr h1 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="hdr-tag">スクール内発表｜自作ツール報告</div>
+    <h1>読書血肉化</h1>
+    <div class="hdr-sub">
+      本の気づきを、AI壁打ちで「IF-THEN」の行動に変え、<br>
+      日次レビューまでつなぐツール
+    </div>
+    <a class="app-link" href="https://dokusyo-tinikuka.vercel.app" target="_blank" rel="noopener">アプリを開く → dokusyo-tinikuka.vercel.app</a>
+  </div>
+
+  <div class="wrap">
+
+    <div class="naruhodo">
+      <div class="n-lbl">この図解で伝えたい「なるほど」</div>
+      <div class="n-text">
+        読んだ内容をメモで終わらせず、<br>
+        <em>AI壁打ち → IF-THEN → 日次レビュー</em> まで一本につないだ。
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ① -->
+    <div class="card card-screen">
+      <span class="sec-label lbl-screen">① ツールの画面</span>
+      <h2>左から右へ進むと、気づきが行動になり、毎日のチェックにつながる</h2>
+
+      <div class="flow-row">
+        <div class="flow-step">
+          <div class="flow-n">STEP 1</div>
+          <div class="flow-t">本一覧</div>
+          <div class="flow-d">読む本を選ぶ</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-n">STEP 2</div>
+          <div class="flow-t">引用・気づき</div>
+          <div class="flow-d">メモを残す</div>
+        </div>
+        <div class="flow-step ai">
+          <div class="flow-n">STEP 3</div>
+          <div class="flow-t">AI対話</div>
+          <div class="flow-d">壁打ちする</div>
+        </div>
+        <div class="flow-step todo">
+          <div class="flow-n">STEP 4</div>
+          <div class="flow-t">TODO</div>
+          <div class="flow-d">IF-THENにする</div>
+        </div>
+        <div class="flow-step rev">
+          <div class="flow-n">STEP 5</div>
+          <div class="flow-t">日次レビュー</div>
+          <div class="flow-d">毎日チェック</div>
+        </div>
+      </div>
+
+      <div class="shot-wrap">
+        <img src="assets/dokusyo-tinikuka-screen.png" alt="読書血肉化の画面キャプチャ：本一覧・引用気づき・AI対話・TODO管理の4ペイン">
+        <div class="shot-cap">実際の画面（4ペイン）。左の「引用・気づき」を選ぶと、中央でAIが壁打ちを始め、結論を右のTODOへ送れる。</div>
+      </div>
+
+      <div class="pane-note">
+        <div class="pane">
+          <div class="pane-k">左端</div>
+          <div class="pane-t">本一覧</div>
+          <div class="pane-d">読んでいる本・TODO化済みの本を一覧で管理</div>
+        </div>
+        <div class="pane">
+          <div class="pane-k">2列目</div>
+          <div class="pane-t">引用・気づき</div>
+          <div class="pane-d">引用文と自分の気づきをカードで残す</div>
+        </div>
+        <div class="pane">
+          <div class="pane-k">中央｜AIの出番</div>
+          <div class="pane-t">AI対話</div>
+          <div class="pane-d">答え出しではなく、気づきの壁打ち役</div>
+        </div>
+        <div class="pane">
+          <div class="pane-k">右端</div>
+          <div class="pane-t">TODO管理</div>
+          <div class="pane-d">IF（条件）→ THEN（行動）と達成回数</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ② -->
+    <div class="card card-data">
+      <span class="sec-label lbl-data">② 保持できるようにしたデータ</span>
+      <h2>本・気づき・壁打ち・TODOに加え、日次レビューとカレンダーまでつなぐ</h2>
+
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="data-name">本</div>
+          <div class="data-ex">タイトル・著者・目的・評価・読書期間・コメント・ステータス</div>
+        </div>
+        <div class="data-item">
+          <div class="data-name">引用・気づき</div>
+          <div class="data-ex">引用文・気づき・ページ・日時</div>
+        </div>
+        <div class="data-item">
+          <div class="data-name">AI対話</div>
+          <div class="data-ex">役割（user / assistant）・本文（壁打ちの履歴）</div>
+        </div>
+        <div class="data-item">
+          <div class="data-name">TODO（IF-THEN）</div>
+          <div class="data-ex">IF・THEN・開始日・期限・達成回数・実践メモ・完了</div>
+        </div>
+        <div class="data-item link">
+          <div class="data-name">日次レビュー連携</div>
+          <div class="data-ex">確定した IF-THEN を共通スプシへ追加し、毎日の習慣チェックに乗せる</div>
+        </div>
+        <div class="data-item cal">
+          <div class="data-name">カレンダー連携</div>
+          <div class="data-ex">習慣化（66日）向けの繰り返し予定</div>
+        </div>
+      </div>
+
+      <div class="sheet-tabs">
+        <span class="tab">スプシのタブ：本</span>
+        <span class="tab">引用・気づき</span>
+        <span class="tab">AI対話</span>
+        <span class="tab">TODO</span>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ③ -->
+    <div class="card card-store">
+      <span class="sec-label lbl-store">③ 保存先と、それを選んだ理由</span>
+      <h2>Googleスプレッドシート（既存の日次レビューと同じ／共通のスプシ）</h2>
+
+      <div class="why-core">
+        既存の日次レビューとつなぎたい
+        <span>TODOが追加され、毎日の習慣チェックの流れに乗る</span>
+      </div>
+
+      <div class="store-row">
+        <div class="store-box store-where">
+          <div class="store-k">保存先</div>
+          <div class="store-t">Googleスプレッドシート</div>
+          <div class="store-d">すでに使っている日次レビューと共通の1冊</div>
+        </div>
+        <div class="store-mid">→</div>
+        <div class="store-box store-effect">
+          <div class="store-k">こうなる</div>
+          <div class="store-t">読書のTODOが、毎日の習慣に乗る</div>
+          <div class="store-d">新しいツールで終わらず、既存のルーティンに合流する</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arr">↓</div>
+
+    <!-- ④ -->
+    <div class="card card-craft">
+      <span class="sec-label lbl-craft">④ 工夫したポイント / 苦戦したポイント</span>
+      <h2>AIは答えを出す役ではなく、気づきを行動に変える壁打ち役にした</h2>
+
+      <div class="split">
+        <div class="panel panel-good">
+          <h3>工夫したこと</h3>
+          <ol>
+            <li>TODOをただのタスクにせず、<strong>IF-THEN</strong>の形にした</li>
+            <li><strong>AI活用</strong>：答え出しではなく、気づきの<strong>壁打ち役</strong>。結論をTODOに送る</li>
+            <li>日次レビューでも使えるよう<strong>共通スプレッドシート</strong>にし、TODOが追加されるようにした</li>
+          </ol>
+        </div>
+        <div class="panel panel-hard">
+          <h3>苦戦したこと</h3>
+          <ol>
+            <li>微修正にかなり時間がかかった</li>
+            <li>レイアウト調整</li>
+            <li>TODO連携のつなぎ込み</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="ai-callout">
+        <div class="ai-k">AIの出番（画面中央の「AI対話」だけ）</div>
+        <p>
+          引用・気づきを選ぶ → AIと壁打ち → 結論を IF-THEN の TODO にして右へ送る。<br>
+          本の記録そのものや、日次レビュー保存の本体処理はAIの仕事ではない。<br>
+          AIは「気づき → 行動（TODO）」の<strong>橋渡し</strong>役。
+        </p>
+        <div class="ai-bridge">
+          <span class="ai-pill">気づき</span>
+          <span class="ai-arr">→</span>
+          <span class="ai-pill mid">AI壁打ち</span>
+          <span class="ai-arr">→</span>
+          <span class="ai-pill mid">IF-THEN</span>
+          <span class="ai-arr">→</span>
+          <span class="ai-pill ok">日次レビュー</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arr">↓ 受けて、仲間がやること</div>
+
+    <div class="card card-action">
+      <span class="sec-label lbl-action">✅ 仲間がやること</span>
+      <h2>「メモした満足」で止めず、毎日やる行動まで一本につなぐ</h2>
+      <div class="ac">
+        <div class="ac-icon">🎯</div>
+        <div>
+          <div class="ac-title">気づき → 壁打ち → IF-THEN → 既存の日次チェック、の順で設計する</div>
+          <div class="ac-desc">
+            新しい保存場所を増やさず、すでに続いている日次レビューに合流させると、ツールが「作って終わり」になりにくい。
+            AIは答えを書く人ではなく、自分の言葉で行動条件を固める壁打ち相手にするとよい。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-sum">
+      <div class="sum-lbl">🎯 ひと言まとめ</div>
+      <div class="sum-text">
+        記録で終わらせず、毎日の行動まで設計した。<br>
+        本の気づきを、AI壁打ち → IF-THEN → 日次レビューへ。
+      </div>
+      <div class="sum-sub">
+        保存先は既存の日次レビューと同じスプレッドシート。<br>
+        「既存の日次レビューとつなぎたい」が、設計の起点。
+      </div>
+    </div>
+
+    <div class="foot">
+      スクール内発表の自作ツール報告図解。<br>
+      アプリ：<a href="https://dokusyo-tinikuka.vercel.app" target="_blank" rel="noopener">https://dokusyo-tinikuka.vercel.app</a>
+    </div>
+
+  </div>
+</body>
+</html>
